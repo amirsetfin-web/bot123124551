@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>نووا — دستیار هوشمند</title><meta name="theme-color" content="#f6f5f2"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="نووا"><meta name="color-scheme" content="light dark">
+<style>
+:root{--bg:#f6f5f2;--sf:#fff;--sf2:#efede8;--tx:#1d1c1a;--mt:#6f6c66;--bd:#e2dfd8;--ac:#6d4aff;--ac2:#a24bff;--ut:#fff;--cd:#14131a;--ct:#e8e6f0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f0e13;--sf:#17161d;--sf2:#201f28;--tx:#ececf1;--mt:#9a98a6;--bd:#2a2933;--cd:#0a0a0e;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f0e13;--sf:#17161d;--sf2:#201f28;--tx:#ececf1;--mt:#9a98a6;--bd:#2a2933;--cd:#0a0a0e;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--tx);font:15px/1.8 Vazirmatn,Tahoma,"Segoe UI",system-ui,sans-serif;overflow:hidden}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+#app{display:flex;height:100%}
+#side{width:272px;background:var(--sf);border-inline-end:1px solid var(--bd);display:flex;flex-direction:column;padding:12px;gap:10px;transition:transform .25s}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;padding:4px 6px}
+.logo{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--ac),var(--ac2));display:grid;place-items:center;color:#fff;font-size:17px}
+.newc{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;border-radius:12px;padding:10px;font-weight:700}
+#list{flex:1;overflow:auto;display:flex;flex-direction:column;gap:3px}
+.it{display:flex;align-items:center;gap:6px;padding:8px 10px;border-radius:10px;color:var(--mt);text-align:start}
+.it span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.it:hover,.it.on{background:var(--sf2);color:var(--tx)}
+.it i{font-style:normal;opacity:0;padding:0 4px}.it:hover i{opacity:.8}
+.row{display:flex;gap:8px}.row button{flex:1;background:var(--sf2);border-radius:10px;padding:8px;font-size:13px}
+#main{flex:1;display:flex;flex-direction:column;min-width:0}
+#top{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--bd);background:var(--sf)}
+#menu{display:none;font-size:20px}
+#mode{background:var(--sf2);border:1px solid var(--bd);color:var(--tx);border-radius:10px;padding:6px 10px;font:inherit}
+#top b{flex:1}
+#msgs{flex:1;overflow:auto;padding:20px 16px;scroll-behavior:smooth}
+.w{max-width:760px;margin:0 auto}
+.m{display:flex;gap:12px;margin-bottom:22px}
+.av{flex:none;width:32px;height:32px;border-radius:10px;display:grid;place-items:center;font-size:15px;background:var(--sf2)}
+.m.a .av{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff}
+.bd{flex:1;min-width:0}
+.m.u .bd{background:var(--ac);color:var(--ut);padding:10px 14px;border-radius:16px;flex:0 1 auto;white-space:pre-wrap}
+.m.u{justify-content:flex-start}
+.c{overflow-wrap:anywhere}
+.c p{margin:.4em 0}.c ul,.c ol{margin:.4em 0;padding-inline-start:22px}.c h1,.c h2,.c h3{margin:.8em 0 .3em;line-height:1.4}
+.c code{background:var(--sf2);padding:1px 6px;border-radius:6px;font-family:ui-monospace,Consolas,monospace;font-size:.9em;direction:ltr;unicode-bidi:isolate}
+.cb{background:var(--cd);color:var(--ct);border-radius:12px;margin:10px 0;overflow:hidden;direction:ltr;text-align:left}
+.cb div{display:flex;justify-content:space-between;padding:6px 12px;background:#00000040;font-size:12px;color:#a8a6b8}
+.cb pre{margin:0;padding:12px;overflow-x:auto;font:13px/1.6 ui-monospace,Consolas,monospace}
+.cb button{color:#c9c7d8;font-size:12px}
+.tools{display:flex;gap:6px;margin-top:4px}.tools button{font-size:12px;color:var(--mt);padding:2px 8px;border-radius:8px}.tools button:hover{background:var(--sf2)}
+.dot::after{content:"▍";animation:b 1s infinite;color:var(--ac)}@keyframes b{50%{opacity:0}}
+#hero{text-align:center;padding:8vh 0 20px}
+#hero h1{font-size:34px;margin:12px 0 4px;background:linear-gradient(135deg,var(--ac),var(--ac2));-webkit-background-clip:text;background-clip:text;color:transparent}
+#hero p{color:var(--mt);margin:0 0 24px}
+.chips{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+.chips button{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:12px;text-align:start;line-height:1.6}
+.chips button:hover{border-color:var(--ac)}
+#bar{padding:10px 16px 14px}
+#box{max-width:760px;margin:0 auto;display:flex;align-items:flex-end;gap:8px;background:var(--sf);border:1px solid var(--bd);border-radius:18px;padding:8px}
+#box:focus-within{border-color:var(--ac)}
+#in{flex:1;resize:none;max-height:180px;border:0;outline:0;background:none;color:var(--tx);font:inherit;padding:6px 8px}
+#send{width:38px;height:38px;border-radius:12px;background:var(--ac);color:#fff;font-size:18px}
+#send:disabled{opacity:.4}
+.note{text-align:center;color:var(--mt);font-size:12px;margin-top:6px}
+@media(max-width:760px){#side{position:fixed;inset-block:0;inset-inline-start:0;z-index:5;transform:translateX(100%);padding-top:calc(12px + env(safe-area-inset-top,0px))}[dir=rtl] #side{transform:translateX(100%)}#side.open{transform:none!important}#menu{display:block}}
+#atts{max-width:760px;margin:0 auto 6px;display:flex;gap:6px;flex-wrap:wrap}#atts button{background:var(--sf2);border-radius:10px;padding:2px 10px;font-size:12px}
+#box>button:not(#send){width:34px;height:38px;font-size:17px;flex:none}
+#top button{font-size:18px}
+#q{background:var(--sf2);border:1px solid var(--bd);color:var(--tx);border-radius:10px;padding:7px 10px;font:inherit;font-size:13px}
+#pv{display:none;position:fixed;top:0;bottom:0;left:0;width:min(640px,100%);z-index:9;background:var(--sf);border-right:1px solid var(--bd);box-shadow:0 0 40px #0006;padding-top:env(safe-area-inset-top,0px)}
+#pv.on{display:flex;flex-direction:column}
+#pvh{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid var(--bd)}#pvh button{padding:2px 8px;font-size:16px}
+#pvf{flex:1;border:0;background:#fff;width:100%}
+dialog{background:var(--sf);color:var(--tx);border:1px solid var(--bd);border-radius:16px;width:min(460px,92vw);padding:18px}dialog::backdrop{background:#0008}
+dialog textarea{width:100%;min-height:120px;background:var(--sf2);color:var(--tx);border:1px solid var(--bd);border-radius:10px;padding:8px;font:inherit}
+dialog .newc{margin-top:10px;width:100%}
+.cb span button{margin-inline-start:8px}
+.tc{font-size:12px;color:var(--mt);background:var(--sf2);display:inline-block;padding:1px 10px;border-radius:10px;margin:0 0 6px 6px}.fc{display:block;margin-top:8px;background:var(--sf2);border:1px solid var(--bd);border-radius:12px;padding:8px 14px}.fc:hover{border-color:var(--ac)}
+.ask{background:var(--sf2);border-radius:14px;padding:10px;margin-top:8px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}.ask div{width:100%}.ask button{background:var(--sf);border:1px solid var(--bd);border-radius:10px;padding:4px 14px}.ask button:hover{border-color:var(--ac)}
+.cb .ln{color:#8f8da3;font-size:12px}.cb>div{gap:10px;align-items:center}.cb>div>span:last-child{margin-inline-start:auto}
+.cb.wr .bar{display:block;height:3px;background:linear-gradient(90deg,transparent,var(--ac),transparent);background-size:50% 100%;background-repeat:no-repeat;animation:sl 1.2s linear infinite}@keyframes sl{from{background-position:-50% 0}to{background-position:150% 0}}
+table{border-collapse:collapse;margin:8px 0}th,td{border:1px solid var(--bd);padding:4px 10px}th{background:var(--sf2)}.tw{overflow-x:auto}
+blockquote{margin:6px 0;padding:2px 12px;border-inline-start:3px solid var(--ac);color:var(--mt)}.c a{color:var(--ac)}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:12px;margin-top:10px}.card>b{display:block;margin-bottom:6px}.plan .d{color:var(--mt);text-decoration:line-through}
+#pvc{flex:1;direction:ltr;font:13px/1.6 ui-monospace,Consolas,monospace;background:var(--cd);color:var(--ct);border:0;padding:12px;resize:none}#pvc[hidden]{display:none}
+#pvf.m{max-width:390px;margin:0 auto;border-inline:1px solid var(--bd)}#pv.fs{width:100%}
+.toast{position:fixed;bottom:90px;inset-inline:0;margin:auto;width:max-content;max-width:90%;background:var(--ac);color:#fff;padding:8px 18px;border-radius:20px;z-index:30}
+#cols{display:flex;gap:8px;margin:6px 0}#cols button{width:28px;height:28px;border-radius:50%;border:2px solid var(--bd)}
+:root{--ac:#1d1c1a;--ac2:#1d1c1a;--ut:#fff}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--ac:#ececf1;--ac2:#ececf1;--ut:#0f0e13}}
+:root[data-theme="dark"]{--ac:#ececf1;--ac2:#ececf1;--ut:#0f0e13}
+.newc,.logo,.m.a .av,#send{background:var(--ac)!important;color:var(--ut)!important}
+#hero h1{background:none!important;-webkit-text-fill-color:var(--tx);color:var(--tx)}
+#hero p,.chips,.note,#mode,#cols{display:none!important}
+.toast{color:var(--ut)}
+html{-webkit-text-size-adjust:100%}*{-webkit-tap-highlight-color:transparent}
+body,#app{height:100vh;height:100dvh}
+#in{font-size:16px}
+#msgs{-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.vf{width:100%;border:0;border-radius:10px;background:#000;display:block}.im{width:100%;max-width:420px;display:block;border-radius:10px;background:#fff}
+.card .tools{margin-top:8px}.card .tools button{background:var(--sf2);padding:4px 12px;border-radius:10px;font-size:13px}.card .tools button:disabled{opacity:.6}
+@media(max-width:760px){#side{width:min(86vw,300px)}}
+@media(hover:none){.it i{opacity:.7}}
+#msgs{scroll-behavior:auto}#main{position:relative}
+#dn{position:absolute;left:50%;transform:translateX(-50%);bottom:112px;width:38px;height:38px;border-radius:50%;background:var(--sf);border:1px solid var(--bd);z-index:5;font-size:18px;box-shadow:0 2px 10px #0003}
+.fcard{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:start;background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:12px 14px;margin:10px 0;cursor:pointer}.fcard:hover{border-color:var(--mt)}
+.fcard .ft{display:flex;flex-direction:column;min-width:0}.fcard b{font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.fcard small{color:var(--mt);font-size:12px}
+.fcard .fi{flex:none;width:52px;height:52px;border-radius:12px;background:var(--sf2);display:grid;place-items:center;font:600 18px ui-monospace,monospace;direction:ltr}
+.sum{display:flex;align-items:center;gap:8px;background:none;color:var(--mt);font-size:13px;padding:2px 0 8px;max-width:100%;text-align:start}.sum span:nth-child(2){overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tc{cursor:pointer}
+#sh{position:fixed;inset:0;z-index:40;background:#0008;display:none;align-items:flex-end}#sh.on{display:flex}
+#shb{width:100%;max-height:88vh;max-height:88dvh;background:var(--sf);border-radius:22px 22px 0 0;display:flex;flex-direction:column;padding-bottom:env(safe-area-inset-bottom,0px)}
+#shb .grip{width:44px;height:5px;border-radius:3px;background:var(--bd);margin:8px auto}
+#shh{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 18px 10px;font-size:17px}#shh b{flex:1;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#shh button{font-size:20px;width:34px}
+#shc{overflow:auto;padding:0 18px 18px;flex:1}
+.tl .it2{display:flex;gap:12px;padding:6px 0;align-items:flex-start}.tl .dt{display:block;flex:none;width:10px;height:10px;border-radius:50%;background:var(--mt);margin-top:14px}.tl .rw{flex:1;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0}.tl button.rw{background:var(--sf2);border-radius:12px;padding:10px 12px;text-align:start}
+.dtl h4{margin:14px 0 6px;color:var(--mt);font-size:13px}.dtl pre{background:var(--cd);color:var(--ct);border-radius:12px;padding:12px;overflow:auto;direction:ltr;text-align:left;font:13px/1.6 ui-monospace,Consolas,monospace;max-height:50vh;max-height:50dvh;white-space:pre-wrap;word-break:break-word;margin:0}
+.dtl .bt{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.dtl .bt button{background:var(--sf2);padding:6px 14px;border-radius:10px}
+.lb{width:34px;height:38px;display:grid;place-items:center;font-size:17px;cursor:pointer;flex:none;position:relative;overflow:hidden}
+.vh{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:0}
+@media(pointer:coarse){#top button,#pvh button,#shh button{min-width:42px;min-height:42px}.it{padding:12px 10px}.lb{width:40px;height:42px}}
+.chips2{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.chips2 button{background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:8px 14px;text-align:start}.chips2 button:hover{border-color:var(--mt)}
+#box{position:relative}#am{position:absolute;bottom:calc(100% + 8px);inset-inline-start:0;background:var(--sf);border:1px solid var(--bd);border-radius:14px;padding:6px;display:flex;flex-direction:column;min-width:170px;box-shadow:0 8px 30px #0004;z-index:8}#am[hidden]{display:none}
+.ai{position:relative;display:block;padding:12px 14px;border-radius:10px;cursor:pointer;overflow:hidden}.ai:hover{background:var(--sf2)}
+#top b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#pvh{gap:6px}#pvh b{flex:1;min-width:0;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#pvh span{display:flex;gap:2px;flex-wrap:nowrap}#pvx{order:-1}
+@media(max-width:760px){#pvm,#pvz,#tts,#pvo{display:none}#top{gap:4px;padding:8px 10px}}
+.sa-only{display:none}.sa .sa-only{display:block}dialog[open]{display:flex;flex-direction:column}dialog h3{order:-3}#prov{order:-2}dialog{max-height:88vh;overflow:auto}
+#prov input,#prov select{width:100%;margin:4px 0;background:var(--sf2);color:var(--tx);border:1px solid var(--bd);border-radius:10px;padding:8px;font:inherit;font-size:16px;box-sizing:border-box;direction:ltr;text-align:left}#prov h4{margin:8px 0 4px}#pstat{font-size:13px;color:var(--mt);min-height:18px;margin:6px 0;word-break:break-word}
+</style>
+</head>
+<body>
+<div id="app">
+<aside id="side">
+<div class="brand"><div class="logo">✦</div>نووا</div>
+<button class="newc" id="new">+ گفتگوی جدید</button>
+<input id="q" placeholder="🔎 جستجو در گفتگوها…"><div id="list"></div>
+<div class="row"><button id="theme">🌓 تم</button><button id="exp">⬇ خروجی</button><button id="clr">🗑 پاک‌سازی</button></div>
+</aside>
+<section id="main">
+<div id="top"><button id="menu">☰</button><b id="ttl">گفتگوی جدید</b><button id="tts" title="خواندن پاسخ‌ها">🔇</button><button id="thm" title="تاریک/روشن">🌙</button><button id="fls" title="فایل‌ها">📁</button><button id="pvo" title="باز کردن آخرین سایت">🖥</button><button id="cfg" title="تنظیمات">⚙️</button>
+<select id="mode">
+<option value="chat">💬 عمومی</option>
+<option value="code">👨‍💻 برنامه‌نویس</option>
+<option value="write">✍️ نویسنده</option>
+<option value="teach">🎓 معلم</option>
+<option value="trans">🌐 مترجم</option><option value="design">🎨 طراح وب/اپ</option><option value="analyst">📊 تحلیلگر</option><option value="custom">🧩 سفارشی</option>
+</select></div>
+<div id="msgs"><div class="w" id="w"></div></div>
+<button id="dn" hidden>↓</button><div id="bar"><div id="atts"></div><div id="box"><button id="att" title="پیوست">📎</button><div id="am" hidden><label class="ai">📷 عکس<input id="fi2" class="vh" type="file" accept="image/*" multiple></label><label class="ai">🎬 ویدیو<input id="fi3" class="vh" type="file" accept="video/*"></label><label class="ai">📄 فایل<input id="fi1" class="vh" type="file" multiple></label></div><button id="mic" title="ورودی صوتی">🎤</button><textarea id="in" rows="1" placeholder="هر چیزی بپرس…"></textarea><button id="send" title="ارسال">➤</button></div>
+<div class="note">نووا هم ممکن است اشتباه کند؛ موارد مهم را بررسی کنید.</div></div>
+</section>
+</div>
+<div id="pv"><div id="pvh"><b>پیش‌نمایش زنده</b><span><button id="pvu" title="برگشت به نسخهٔ قبلی">↩</button><button id="pvz" title="تمام‌صفحه">⛶</button><button id="pvm" title="موبایل/دسکتاپ">📱</button><button id="pve" title="ویرایش کد">✎</button><button id="pvr" title="بارگذاری مجدد">↻</button><button id="pvd" title="دانلود">⬇</button><button id="pvx" title="بستن">✕</button></span></div><iframe id="pvf" sandbox="allow-scripts allow-forms allow-modals allow-popups"></iframe><textarea id="pvc" hidden spellcheck="false"></textarea></div>
+<div id="sh"><div id="shb"><div class="grip"></div><div id="shh"><button id="shk" hidden>→</button><b id="sht"></b><button id="shx">✕</button></div><div id="shc"></div></div></div>
+<dialog id="dlg"><h3 style="margin-top:0">⚙️ تنظیمات</h3><p style="color:var(--mt);margin:0 0 8px">دربارهٔ خودت یا لحن دلخواهت بنویس تا نووا همیشه در نظر بگیرد:</p><textarea id="about" placeholder="مثلاً: برنامه‌نویس جاوااسکریپتم، کوتاه و رک جواب بده"></textarea><button class="newc" id="cm" style="background:var(--sf2);color:var(--tx)">🧹 پاک‌کردن حافظهٔ دائمی</button><p style="margin:12px 0 6px;color:var(--mt)">🧩 شخصیت سفارشی (همیشه اعمال می‌شود):</p><textarea id="persona" style="min-height:70px" placeholder="مثلاً: تو مربی تناسب اندام من هستی…"></textarea><div id="cols" hidden></div><div class="sa-only" id="prov"><h4>🧠 هوش مصنوعی شخصیِ خودت</h4><select id="pvs"><option value="groq">Groq — رایگان و سریع</option><option value="gemini">Google Gemini — رایگان</option><option value="openrouter">OpenRouter — مدل‌های رایگان</option><option value="ollama">Ollama — روی کامپیوتر خودت</option><option value="custom">سفارشی (هر سرویس سازگار با OpenAI)</option></select><input id="pbase" placeholder="Base URL" autocomplete="off"><input id="pkey" type="password" placeholder="API Key" autocomplete="off"><input id="pmodel" placeholder="Model" autocomplete="off"><input id="pbig" placeholder="Model (قوی‌تر، اختیاری)" autocomplete="off"><button class="newc" id="ptest" style="background:var(--sf2);color:var(--tx)">🔌 تست اتصال</button><div id="pstat"></div></div>
+<button class="newc" id="tts2" style="background:var(--sf2);color:var(--tx);margin:0 0 8px">🔇 خواندن پاسخ‌ها با صدا</button><div class="row" style="margin-top:8px"><button id="bkx">⬆ پشتیبان‌گیری</button><button id="bki">⬇ بازیابی</button></div><button class="newc" id="sv">ذخیره</button></dialog>
+<script>
+(()=>{const EX=window.claude;if(EX&&typeof EX.use==='function')return;
+document.documentElement.classList.add('sa');
+const LIST=[
+{id:'groq',name:'Groq',tag:'رایگان · سریع',base:'https://api.groq.com/openai/v1',model:'llama-3.3-70b-versatile',nk:true,url:'https://console.groq.com/keys'},
+{id:'cerebras',name:'Cerebras',tag:'رایگان · خیلی سریع',base:'https://api.cerebras.ai/v1',model:'llama-3.3-70b',nk:true,url:'https://cloud.cerebras.ai/'},
+{id:'openrouter',name:'OpenRouter',tag:'مدل‌های رایگان',base:'https://openrouter.ai/api/v1',model:'meta-llama/llama-3.3-70b-instruct:free',nk:true,url:'https://openrouter.ai/keys'},
+{id:'gemini',name:'Google Gemini',tag:'رایگان',base:'https://generativelanguage.googleapis.com/v1beta/openai',model:'gemini-2.5-flash',nk:true,url:'https://aistudio.google.com/apikey'},
+{id:'mistral',name:'Mistral',tag:'رایگان (محدود)',base:'https://api.mistral.ai/v1',model:'mistral-small-latest',nk:true,url:'https://console.mistral.ai/api-keys'},
+{id:'sambanova',name:'SambaNova',tag:'رایگان',base:'https://api.sambanova.ai/v1',model:'Meta-Llama-3.3-70B-Instruct',nk:true,url:'https://cloud.sambanova.ai/apis'},
+{id:'deepseek',name:'DeepSeek',tag:'ارزان',base:'https://api.deepseek.com/v1',model:'deepseek-chat',nk:true,url:'https://platform.deepseek.com/api_keys'},
+{id:'anthropic',name:'Claude (Anthropic)',tag:'پولی · بهترین کیفیت',type:'anthropic',base:'https://api.anthropic.com',model:'claude-sonnet-5-5',big:'claude-opus-5-5',nk:true,url:'https://console.anthropic.com/settings/keys'},
+{id:'openai',name:'OpenAI',tag:'پولی',base:'https://api.openai.com/v1',model:'gpt-4.1-mini',nk:true,url:'https://platform.openai.com/api-keys'},
+{id:'pollinations',name:'Pollinations',tag:'بدون کلید · آزمایشی',base:'https://text.pollinations.ai/openai',model:'openai',nk:false},
+{id:'ollama',name:'Ollama',tag:'روی کامپیوتر خودت',base:'http://localhost:11434/v1',model:'qwen2.5:14b',nk:false}];
+const KEYCFG='nova.provs',NOTOOLS=new Set(),COOL={};
+const load=()=>{let s=null;try{s=JSON.parse(localStorage.getItem(KEYCFG))}catch(e){}
+ if(!s||typeof s!=='object'){s={v:2,items:{},custom:[]};try{const o=JSON.parse(localStorage.getItem('nova.prov'));if(o&&o.base&&o.model)s.custom.push({id:'c'+Date.now(),type:'openai',name:o.name||'سفارشی',base:o.base,key:o.key||'',model:o.model,big:o.big||'',on:true})}catch(e){}}
+ s.items=s.items||{};s.custom=s.custom||[];return s};
+function providers(){const S=load();const a=LIST.map(L=>{const u=S.items[L.id]||{};const p={...L,key:u.key||'',model:u.model||L.model,big:u.big!==undefined&&u.big!==''?u.big:L.big||''};p.on=L.nk?!!p.key:u.on===true;return p});
+ S.custom.forEach(c=>a.push({...c,nk:false,on:c.on!==false&&!!c.base&&!!c.model}));return a}
+const active=()=>providers().filter(p=>p.on&&p.base&&p.model);
+const toB64=b=>new Promise(r=>{const f=new FileReader();f.onload=()=>r(f.result.split(',')[1]);f.readAsDataURL(b)});
+const flat=m=>typeof m.content==='string'?m.content:(m.content||[]).map(b=>b.text||'').join('');
+const hasImages=ms=>ms.some(m=>Array.isArray(m.content)&&m.content.some(b=>b.type==='image'));
+async function* lines(resp){const rd=resp.body.getReader(),dec=new TextDecoder();let buf='';for(;;){const{done,value}=await rd.read();if(done)break;buf+=dec.decode(value,{stream:true});const p=buf.split('\n');buf=p.pop();for(const l of p)yield l}}
+function toOA(msgs,tools,strip){const out=[];for(const m of msgs){if(typeof m.content==='string'){out.push({role:m.role,content:m.content});continue}
+ const parts=[],calls=[],res=[];for(const b of m.content||[]){if(b.type==='text')parts.push({type:'text',text:b.text});
+  else if(b.type==='image'){if(strip)parts.push({type:'text',text:'[تصویر پیوست شد اما این مدل تصویر را پشتیبانی نمی‌کند]'});else parts.push({type:'image_url',image_url:{url:'data:'+b.source.media_type+';base64,'+b.source.data}})}
+  else if(b.type==='tool_use')calls.push({id:b.id,type:'function',function:{name:b.name,arguments:JSON.stringify(b.input||{})}});
+  else if(b.type==='tool_result')res.push({role:'tool',tool_call_id:b.tool_use_id,content:typeof b.content==='string'?b.content:JSON.stringify(b.content)})}
+ if(m.role==='assistant'){const t=parts.map(p=>p.text||'').join('');out.push({role:'assistant',content:t||null,...(calls.length?{tool_calls:calls}:{})})}
+ else{out.push(...res);if(parts.length)out.push({role:'user',content:parts.every(p=>p.type==='text')?parts.map(p=>p.text).join(''):parts})}}
+ return{messages:out,...(tools.length?{tools:tools.map(t=>({type:'function',function:{name:t.name,description:t.description,parameters:t.input_schema||{type:'object',properties:{}}}}))}:{})}}
+async function* oaEvents(resp){let next=0,textIdx=null,stop='end_turn';const tools={},byIdx={};
+ for await(const ln of lines(resp)){if(!ln.startsWith('data:'))continue;const d=ln.slice(5).trim();if(!d||d==='[DONE]')continue;let j;try{j=JSON.parse(d)}catch(e){continue}
+  const ch=j.choices&&j.choices[0];if(!ch)continue;const dl=ch.delta||{};
+  if(typeof dl.content==='string'&&dl.content){if(textIdx===null){textIdx=next++;yield{type:'content_block_start',index:textIdx,content_block:{type:'text',text:''}}}yield{type:'content_block_delta',index:textIdx,delta:{type:'text_delta',text:dl.content}}}
+  for(const tc of dl.tool_calls||[]){const ix=tc.index===undefined?0:tc.index;let k;if(tc.id){k='id:'+tc.id;byIdx[ix]=k}else k=byIdx[ix]||('i:'+ix);
+   if(tools[k]===undefined){tools[k]=next++;yield{type:'content_block_start',index:tools[k],content_block:{type:'tool_use',id:tc.id||'call_'+Math.random().toString(36).slice(2),name:(tc.function&&tc.function.name)||'',input:{}}}}
+   const a=tc.function&&tc.function.arguments;if(a)yield{type:'content_block_delta',index:tools[k],delta:{type:'input_json_delta',partial_json:typeof a==='string'?a:JSON.stringify(a)}}}
+  if(ch.finish_reason)stop=ch.finish_reason==='tool_calls'?'tool_use':'end_turn'}
+ if(Object.keys(tools).length)stop='tool_use';yield{type:'message_delta',delta:{stop_reason:stop}}}
+async function* anthEvents(r){for await(const l of lines(r)){if(!l.startsWith('data: '))continue;try{yield JSON.parse(l.slice(6))}catch(e){}}}
+const hdr=p=>p.type==='anthropic'?{'Content-Type':'application/json','x-api-key':p.key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'}:{'Content-Type':'application/json',...(p.key?{Authorization:'Bearer '+p.key}:{})};
+const netErr=p=>({code:'net',message:/localhost|127\.0\.0\.1/.test(p.base)?'سرویس محلی روشن نیست یا CORS بسته است (Ollama را با OLLAMA_ORIGINS=* اجرا کن)':'به سرویس وصل نشد (اینترنت، فیلتر/VPN یا CORS)'});
+const httpErr=(s,t)=>({code:s===401||s===403?'auth':s===429?'rate_limited':'error',status:s,message:s+': '+String(t).replace(/\s+/g,' ').slice(0,160)});
+async function oaStream(msgs,tools,o,p){const model=(o.modelTier==='complex'&&p.big)||p.model;let useTools=tools.length&&!NOTOOLS.has(p.id+model),strip=false;
+ for(let a=0;a<3;a++){let r;
+  try{r=await fetch(p.base.replace(/\/$/,'')+'/chat/completions',{method:'POST',signal:o.signal,headers:hdr(p),body:JSON.stringify({model,stream:true,max_tokens:p.max||8192,...toOA(msgs,useTools?tools:[],strip)})})}
+  catch(x){if(o.signal&&o.signal.aborted)throw x;throw netErr(p)}
+  if(r.ok)return oaEvents(r);
+  const t=await r.text().catch(()=>'');
+  if((r.status===400||r.status===422)&&a<2){if(useTools&&/tool|function/i.test(t)){useTools=false;NOTOOLS.add(p.id+model);continue}if(!strip&&hasImages(msgs)){strip=true;continue}}
+  throw httpErr(r.status,t)}}
+async function anthStream(msgs,tools,o,p){const model=(o.modelTier==='complex'&&p.big)||p.model;let r;
+ try{r=await fetch(p.base.replace(/\/$/,'')+'/v1/messages',{method:'POST',signal:o.signal,headers:hdr(p),body:JSON.stringify({model,max_tokens:16000,stream:true,messages:msgs,...(tools.length?{tools}:{})})})}
+ catch(x){if(o.signal&&o.signal.aborted)throw x;throw netErr(p)}
+ if(!r.ok)throw httpErr(r.status,await r.text().catch(()=>''));return anthEvents(r)}
+const GREET=/^(سلام|درود|hi|hello|hey|هی|خوبی|چطوری|مرسی|ممنون|thanks|thank you|ok|اوکی)[\s!؟?.،]*$/i;
+async function openEvents(msgs,tools,o){const act=active();
+ if(act.length){const lastU=[...msgs].reverse().find(m=>m.role==='user'),isTool=!!(lastU&&Array.isArray(lastU.content)&&lastU.content.some(b=>b.type==='tool_result')),tail=lastU?flat(lastU).split('\n\n').pop().trim():'';
+  const tl=(!isTool&&GREET.test(tail))?[]:tools;const now=Date.now();let order=act.filter(p=>!(COOL[p.id]>now));if(!order.length)order=act;const fails=[];let last;
+  for(const p of order){try{const ev=await(p.type==='anthropic'?anthStream:oaStream)(msgs,tl,o,p);window.__novaProv=p.name;return ev}catch(e){if(o.signal&&o.signal.aborted)throw e;last=e;fails.push(p.name+' ← '+(e.message||e.code));if(e.code==='rate_limited'||e.code==='net'||(e.status&&e.status>=500)||e.status===402)COOL[p.id]=Date.now()+60000}}
+  throw{code:last.code,message:fails.join(' | ')}}
+ let r=null;try{r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},signal:o.signal,body:JSON.stringify({messages:msgs,tools,tier:o.modelTier})})}catch(x){if(o.signal&&o.signal.aborted)throw x}
+ if(r&&r.ok)return anthEvents(r);
+ if(r&&r.status!==404&&r.status!==405)throw httpErr(r.status,await r.text().catch(()=>''));
+ return 'none'}
+async function sample(input,o={}){
+ const msgs=(typeof input==='string'?[{role:'user',content:input}]:input).map(m=>({role:m.role,content:m.content}));
+ if(o.images&&o.images.length){const last=msgs[msgs.length-1];last.content=[...await Promise.all(o.images.map(async b=>({type:'image',source:{type:'base64',media_type:b.type||'image/png',data:await toB64(b)}}))),{type:'text',text:last.content}]}
+ const tools=(o.tools||[]).map(t=>({name:t.name,description:t.description,input_schema:t.inputSchema||{type:'object',properties:{}}}));
+ let full='';
+ for(let turn=0;turn<50;turn++){
+  const evs=await openEvents(msgs,tools,o);
+  if(evs==='none'){const t='⚙️ برای شروع، یک هوش مصنوعی وصل کن: تنظیمات ← یکی از سرویس‌ها (مثلاً Groq که رایگان است) را انتخاب کن، کلید API را بگذار و «تست همهٔ سرویس‌ها» را بزن.\n\nاگر این فایل را داخل پیش‌نمایش اپ Claude باز کرده‌ای، آن را در Chrome یا Safari باز کن.';const b=document.getElementById('cfg');if(b)setTimeout(()=>b.click(),50);if(o.onText)o.onText({text:t,delta:t});return{text:t,truncated:false}}
+  const blocks=[];let stop='';
+  for await(const e of evs){
+   if(e.type==='content_block_start')blocks[e.index]=e.content_block.type==='tool_use'?{...e.content_block,json:''}:{type:'text',text:''};
+   else if(e.type==='content_block_delta'){const b=blocks[e.index];if(!b)continue;if(e.delta.type==='text_delta'){b.text+=e.delta.text;full+=e.delta.text;if(o.onText)o.onText({text:full,delta:e.delta.text})}else if(e.delta.type==='input_json_delta')b.json+=e.delta.partial_json}
+   else if(e.type==='message_delta')stop=e.delta.stop_reason}
+  if(stop!=='tool_use')break;
+  const content=blocks.filter(b=>b&&(b.type==='tool_use'||b.text)).map(b=>b.type==='tool_use'?{type:'tool_use',id:b.id,name:b.name,input:(()=>{try{return b.json?JSON.parse(b.json):{}}catch(e){return{}}})()}:{type:'text',text:b.text});
+  const results=[];
+  for(const b of content.filter(b=>b.type==='tool_use')){const t=(o.tools||[]).find(t=>t.name===b.name);let out,err=false;try{if(!t)throw new Error('unknown tool '+b.name);out=await t.execute(b.input)}catch(x){out=String((x&&x.message)||x);err=true}results.push({type:'tool_result',tool_use_id:b.id,content:JSON.stringify(out),is_error:err})}
+  msgs.push({role:'assistant',content},{role:'user',content:results});
+  full+='\n\n'}
+ if(!full.trim()){const t='⚠️ پاسخ خالی بود. مدل یا کلید را در تنظیمات بررسی کن.';if(o.onText)o.onText({text:t,delta:t});return{text:t,truncated:false}}
+ return{text:full,truncated:false}}
+sample.limits=async()=>({images:{maxCount:4}});
+// ---- providers UI
+async function probe(p){const url=p.type==='anthropic'?p.base.replace(/\/$/,'')+'/v1/models':p.base.replace(/\/$/,'')+'/models';
+ if(!p.nk&&!p.key||(!p.nk)){ // keyless or custom: real tiny chat test
+  try{const ev=await(p.type==='anthropic'?anthStream:oaStream)([{role:'user',content:'hi'}],[],{modelTier:'default'},p);let t='';for await(const e of ev)if(e.delta&&e.delta.text)t+=e.delta.text;return{ok:true,msg:'✓ آماده — '+(t.trim().slice(0,40)||'پاسخ دریافت شد'),ids:[]}}catch(e){return{ok:false,msg:'✗ '+(e.message||e.code),ids:[]}}}
+ if(!p.key)return{ok:false,msg:'— کلید نگذاشته‌ای',ids:[],skip:true};
+ let r;try{r=await fetch(url,{headers:hdr(p)})}catch(e){return{ok:false,msg:'✗ دسترسی ممکن نیست (اینترنت، فیلتر/VPN یا CORS)',ids:[]}}
+ if(r.status===401||r.status===403)return{ok:false,msg:'✗ کلید نامعتبر است ('+r.status+')',ids:[]};
+ if(!r.ok&&r.status!==404&&r.status!==405)return{ok:false,msg:'✗ خطا '+r.status,ids:[]};
+ let ids=[];if(r.ok){const j=await r.json().catch(()=>({}));ids=(j.data||j.models||[]).map(x=>String(x.id||x.name||'').replace(/^models\//,'')).filter(x=>x&&!/whisper|embed|guard|tts|rerank|moderation|image|audio|orpheus/i.test(x))}
+ if(ids.length&&!ids.includes(p.model))return{ok:false,warn:true,msg:'⚠️ اتصال و کلید درست است، ولی مدل «'+p.model+'» وجود ندارد. یکی را انتخاب کن:',ids:ids.slice(0,10)};
+ return{ok:true,msg:'✓ آماده'+(r.ok?'':' (لیست مدل‌ها در دسترس نیست)'),ids:[]}}
+function wire(){const box=document.getElementById('prov');if(!box)return;
+ const st=document.createElement('style');st.textContent='.pr{border:1px solid var(--bd);border-radius:12px;padding:8px 10px;margin:8px 0}.pr .hd{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:14px;margin-bottom:4px}.pr .tg{color:var(--mt);font-size:12px}.pr a{color:var(--tx);font-size:12px}.pr .rs{font-size:12px;color:var(--mt);margin-top:4px;word-break:break-word}.mc{display:inline-block;margin:2px;padding:2px 8px;border:1px solid var(--bd);border-radius:8px;font-size:12px;direction:ltr;cursor:pointer}.pr label.ck{display:flex;gap:6px;align-items:center;font-size:13px}.pr .x{font-size:16px;padding:0 6px}.pr input[type=checkbox]{width:auto;margin:0}';document.head.append(st);
+ const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+ const inp=(c,ph,v,type)=>{const i=el('input',c);i.placeholder=ph;i.value=v||'';if(type)i.type=type;i.autocomplete='off';return i};
+ const collect=()=>{const items={},custom=[];box.querySelectorAll('.pr').forEach(r=>{const g=c=>{const e=r.querySelector('.'+c);return e?(e.type==='checkbox'?e.checked:e.value.trim()):''};if(r.dataset.c)custom.push({id:r.dataset.id,type:g('ty')||'openai',name:g('n')||'سفارشی',base:g('b'),key:g('k'),model:g('m'),big:'',on:true});else items[r.dataset.id]={key:g('k'),model:g('m'),on:g('on')===true}});try{localStorage.setItem(KEYCFG,JSON.stringify({v:2,items,custom}))}catch(e){}};
+ const rowOf=p=>{const r=el('div','pr');r.dataset.id=p.id;if(p.custom)r.dataset.c='1';
+  const hd=el('div','hd');
+  if(p.custom){const n=inp('n','نام سرویس',p.name);n.style.width='45%';const ty=el('select','ty');[['openai','OpenAI-سازگار'],['anthropic','Anthropic']].forEach(([v,t])=>{const o=el('option',null,t);o.value=v;ty.append(o)});ty.value=p.type||'openai';ty.style.width='40%';const x=el('button','x','✕');x.onclick=()=>{r.remove();collect()};hd.append(n,ty,x);r.append(hd);r.append(inp('b','Base URL',p.base));}
+  else{hd.append(el('b',null,p.name),el('span','tg',p.tag));if(p.url){const a=el('a',null,'🔑 گرفتن کلید');a.href=p.url;a.target='_blank';a.rel='noopener';hd.append(a)}r.append(hd)}
+  if(p.custom||p.nk)r.append(inp('k','API Key'+(p.custom?' (اختیاری)':''),p.key,'password'));
+  else{const l=el('label','ck');const c=el('input','on');c.type='checkbox';c.checked=!!p.on;l.append(c,el('span',null,'فعال'));r.append(l)}
+  r.append(inp('m','Model',p.model));r.append(el('div','rs'));return r};
+ const render=()=>{box.innerHTML='';box.append(el('h4',null,'🧠 هوش مصنوعی‌های تو'));box.append(el('p','tg','هر کدام کلید داشت فعال می‌شود. اگر یکی محدود یا قطع شد، خودکار سراغ بعدی می‌رود.'));
+  providers().filter(p=>!p.type||LIST.some(L=>L.id===p.id)).forEach(p=>{if(LIST.some(L=>L.id===p.id))box.append(rowOf(p))});
+  load().custom.forEach(c=>box.append(rowOf({...c,custom:true})));
+  const add=el('button','newc','➕ افزودن سرویس سفارشی');add.style.cssText='background:var(--sf2);color:var(--tx)';add.onclick=()=>{box.insertBefore(rowOf({id:'c'+Date.now(),custom:true,type:'openai',name:'',base:'',key:'',model:''}),add);collect()};
+  const all=el('button','newc','🔎 تست همهٔ سرویس‌ها');all.id='pall';all.onclick=async()=>{collect();all.disabled=true;const ps=providers();const rows=[...box.querySelectorAll('.pr')];
+   await Promise.all(rows.map(async r=>{const p=ps.find(x=>x.id===r.dataset.id);const rs=r.querySelector('.rs');if(!p)return;rs.textContent='در حال تست…';const res=await probe(p);rs.textContent=res.msg;if(res.ids&&res.ids.length){const w=el('div');res.ids.forEach(id=>{const c=el('span','mc',id);c.onclick=()=>{r.querySelector('.m').value=id;collect();rs.textContent='مدل تنظیم شد: '+id};w.append(c)});rs.append(w)}}));all.disabled=false};
+  box.append(add,all)};
+ render();box.addEventListener('change',collect);box.addEventListener('input',collect)}
+wire();
+{const c=document.getElementById('cfg');if(c)c.addEventListener('click',()=>setTimeout(()=>{const d=document.getElementById('dlg');if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();if(d)d.scrollTop=0},40))}
+window.__novaActive=()=>active().map(p=>p.id);
+const NEW={use:async n=>n==='sample'?sample:n==='downloads'?{save:async({filename,data})=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data]));a.download=filename;a.click()}}:null};
+try{window.claude=NEW}catch(e){}
+})();
+
+</script>
+<script>
+const $=s=>document.querySelector(s);
+const MODES={chat:"یک دستیار هوشمند، دقیق و دوستانه هستی.",code:"یک مهندس نرم‌افزار ارشد هستی. کد کامل، تمیز و بدون باگ بنویس و فقط نکات ضروری را توضیح بده.",write:"یک نویسنده و ویراستار خلاق هستی. متن‌های روان، جذاب و با لحن مناسب می‌نویسی.",teach:"یک معلم صبور هستی. مفاهیم را ساده، مرحله‌به‌مرحله و با مثال توضیح بده.",trans:"یک مترجم حرفه‌ای هستی. متن کاربر را ترجمه کن؛ اگر فارسی بود به انگلیسی و در غیر این صورت به فارسی. فقط ترجمه را بده."};
+MODES.design='یک طراح و توسعه‌دهندهٔ وب ارشد هستی. رابط‌های مدرن، زیبا و کاملاً کاربردی می‌سازی و همیشه کد کامل تک‌فایلی (HTML+CSS+JS) می‌دهی.';MODES.analyst='یک تحلیلگر داده و پژوهشگر هستی. دقیق، ساختاریافته و مرحله‌به‌مرحله تحلیل می‌کنی و محاسبات را با ابزار انجام می‌دهی.';
+const SUG=["یه کد پایتون برای مرتب‌سازی بنویس","فرق هوش مصنوعی و یادگیری ماشین چیه؟","یک ایمیل رسمی برای درخواست مرخصی بنویس","برنامه ۷ روزه برای یادگیری انگلیسی بده"];
+let S=[],cur=null,ctl=null,busy=false,QV='',PV='';
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+S=store.get("nova.chats",[]);
+const save=()=>store.set("nova.chats",S.slice(0,100).map((c,i)=>i<6?c:{...c,pv:undefined}));
+const esc=t=>t.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+function md(t){
+ const blocks=[];
+ t=t.replace(/```(\w*)\n?([\s\S]*?)(```|$)/g,(_,l,c)=>{blocks.push(`<div class="cb"><div><span>${esc(l||"code")}</span><span>${/^(html|svg)$/i.test(l)?'<button data-prev>▶ پیش‌نمایش</button>':''}<button data-dl>⬇</button><button data-copy>کپی</button></span></div><pre><code>${esc(c.replace(/\n$/,""))}</code></pre></div>`);return`\u0000${blocks.length-1}\u0000`});
+ t=esc(t).replace(/`([^`\n]+)`/g,"<code>$1</code>").replace(/\*\*([^*\n]+)\*\*/g,"<b>$1</b>").replace(/(^|[\s(])\*([^*\n]+)\*/g,"$1<i>$2</i>");
+ const out=[];let list=null;
+ for(const ln of t.split("\n")){
+  let m;
+  if(m=ln.match(/^\s*[-*•]\s+(.*)/)){if(list!=="ul"){if(list)out.push(`</${list}>`);out.push("<ul>");list="ul"}out.push(`<li>${m[1]}</li>`);continue}
+  if(m=ln.match(/^\s*\d+[.)]\s+(.*)/)){if(list!=="ol"){if(list)out.push(`</${list}>`);out.push("<ol>");list="ol"}out.push(`<li>${m[1]}</li>`);continue}
+  if(list){out.push(`</${list}>`);list=null}
+  if(m=ln.match(/^(#{1,3})\s+(.*)/))out.push(`<h${m[1].length}>${m[2]}</h${m[1].length}>`);
+  else if(ln.trim())out.push(`<p>${ln}</p>`);
+ }
+ if(list)out.push(`</${list}>`);
+ return out.join("").replace(/\u0000(\d+)\u0000/g,(_,i)=>blocks[i]).replace(/<p>(<div class="cb">[\s\S]*?<\/div>)<\/p>/g,"$1");
+}
+const chat=()=>S.find(c=>c.id===cur);
+function renderList(){
+ $("#list").innerHTML="";
+ S.filter(c=>!QV||c.title.includes(QV)||c.msgs.some(m=>m.content.includes(QV))).forEach(c=>{const b=document.createElement("button");b.className="it"+(c.id===cur?" on":"");
+  const s=document.createElement("span");s.textContent=c.title;const x=document.createElement("i");x.textContent="✕";
+  x.onclick=e=>{e.stopPropagation();S=S.filter(z=>z.id!==c.id);if(cur===c.id)cur=null;save();render()};
+  b.append(s,x);b.onclick=()=>{cur=c.id;$("#side").classList.remove("open");render()};$("#list").append(b)});
+}
+function msgEl(m,i,live){
+ const d=document.createElement("div");d.className="m "+(m.role==="user"?"u":"a");
+ const av=document.createElement("div");av.className="av";av.textContent=m.role==="user"?"🙂":"✦";
+ const bd=document.createElement("div");bd.className="bd";
+ if(m.role==="user"){bd.textContent=m.show??m.content;bd.dir="auto"}
+ else{const c=document.createElement("div");c.className="c"+(live?" dot":"");c.dir="auto";c.innerHTML=md(m.content);bd.append(c);{const st=stepsOf(m);if(st.length){const sr=document.createElement('button');sr.className='sum';sr.innerHTML='<span>🕘</span><span></span><span>›</span>';sr.children[1].textContent=st.length+' مرحله · '+st[st.length-1].label;sr.onclick=()=>showSummary(m);bd.prepend(sr)}}(m.files||[]).forEach(f=>{const b=document.createElement('button');b.className='fcard';b.innerHTML='<span class="ft"><b></b><small></small></span><span class="fi">'+(/[.](svg|png)$/i.test(f.name)?'🖼':'&lt;/&gt;')+'</span>';b.querySelector('b').textContent=f.name.replace(/[.][^.]*$/,'');b.querySelector('small').textContent=fileKind(f.name);b.onclick=()=>openFile(f.name.split('.').pop(),f.content,f.name);bd.append(b)});(m.cards||[]).forEach(cd=>bd.append(cardEl(cd)));
+  if(!live){const t=document.createElement("div");t.className="tools";t.innerHTML='<button data-all>کپی</button><button data-re>↻ دوباره</button>';bd.append(t)}}
+ d.append(av,bd);d.dataset.i=i;return d;
+}
+function render(){
+ renderList();const c=chat(),w=$("#w");w.innerHTML="";
+ $("#ttl").textContent=c?c.title:"گفتگوی جدید";if(c)$("#mode").value=c.mode||"chat";
+ if(!c||!c.msgs.length){
+  w.innerHTML='<div id="hero"><div class="logo" style="width:56px;height:56px;margin:auto;font-size:28px;border-radius:18px">✦</div><h1>سلام! من نووا هستم</h1><p>دستیار هوشمند همه‌کاره — بنویس، کد بزن، ترجمه کن، یاد بگیر.</p><div class="chips"></div></div>';
+  SUG.forEach(s=>{const b=document.createElement("button");b.textContent=s;b.onclick=()=>send(s);w.querySelector(".chips").append(b)});
+ }else c.msgs.forEach((m,i)=>w.append(msgEl(m,i,false)));
+ scroll();
+}
+let STICK=true;const scroll=f=>{const m=$("#msgs");if(f===true||STICK)m.scrollTop=m.scrollHeight};
+function setBusy(b){busy=b;$("#send").textContent=b?"■":"➤";$("#send").disabled=false}
+async function send(text){
+ text=(text??$("#in").value).trim();if((!text&&!att.length)||busy)return;
+ let c=chat();
+ if(!c){c={id:Date.now()+"",title:(text||att[0]?.name||'گفتگو').slice(0,32),mode:$("#mode").value,msgs:[]};S.unshift(c);cur=c.id}
+ const imgs=att.filter(f=>f.img).flatMap(f=>[f.img,...(f.extra||[])]),docs=att.filter(f=>f.text).map(f=>'\n\n--- فایل: '+f.name+' ---\n'+f.text).join(''),um={role:'user',content:(text||'این فایل را بررسی کن.')+docs,show:(text+' '+att.map(f=>'📎 '+f.name).join(' ')).trim()};if(imgs.length)IMG.set(um,imgs);c.mode=$("#mode").value;c.msgs.push(um);att=[];renderAtt();
+ $("#in").value="";autosize();save();render();await reply(c);
+}
+async function reply(c){
+ const w=$("#w"),m={role:"assistant",content:""};CUR_M=m;LP=false;
+ const el=msgEl(m,c.msgs.length,true);w.append(el);STICK=true;scroll(true);setBusy(true);
+ ctl=new AbortController();
+ const hist=c.msgs.filter(x=>x.content).slice(-200).map(x=>({role:x.role,content:x.content}));
+ const sys="دستورالعمل: "+MODES.chat+(CFG.about?' اطلاعات و ترجیح کاربر: '+CFG.about+'.':'')+((CFG.mem||[]).length?' حافظهٔ دائمی دربارهٔ کاربر: '+CFG.mem.join('؛ ')+'.':'')+(CFG.persona?' دستور/شخصیت کاربر: '+CFG.persona+'.':'')+" نام تو «نووا» است. هم‌زبان کاربر پاسخ بده (پیش‌فرض فارسی)، واضح و مختصر باش و در صورت نیاز از Markdown استفاده کن. اگر کاربر وب‌سایت، اپ، بازی یا تصویر (SVG) خواست، یک فایل کامل و تک‌صفحه‌ای داخل بلاک html یا svg بده تا پیش‌نمایش زنده شود. ابزارها: calculator، current_datetime، run_javascript (اجرای کد جاوااسکریپت و گرفتن خروجی console.log)، create_file (ساخت فایل قابل دانلود)، ask_user (پرسش با دکمه)، remember (حافظهٔ دائمی). هر جا لازم بود از آن‌ها استفاده کن و برای محاسبهٔ دقیق حدس نزن. draw_chart (رسم نمودار)، update_plan (چک‌لیست مراحل برای کارهای چندمرحله‌ای؛ هر مرحله که تمام شد دوباره صدا بزن)، set_timer (تایمر). برای ساخت وب‌سایت: اول update_plan بزن، بعد کد کامل را در یک بلاک html بده؛ در متن فقط خلاصهٔ کوتاه کار را بگو و کد را تکرار نکن. جستجوی اینترنت نداری و اگر نمی‌دانی صادقانه بگو.\n\n";
+ const pvc=c.pv?(c.pv.length<=30000?'\n\nکد فعلی وب‌سایت/اپ این گفتگو (برای تغییر از edit_code استفاده کن):\n'+c.pv+'\n\n':'\n\nیک وب‌سایت/اپ در این گفتگو ساخته شده ('+c.pv.length+' نویسه)؛ آن را با read_code بخوان و با edit_code ویرایش کن.\n\n'):'';hist[0]={role:"user",content:hist[0].role==="user"?sys+pvc+hist[0].content:hist[0].content};
+ const cEl=el.querySelector(".c");LIVE=el.querySelector(".bd");cEl.innerHTML='<span style="color:var(--mt)">دارم فکر می‌کنم…</span>';
+ try{
+  const sample=await claude.use("sample");
+  if(!sample)throw {code:"none"};const lu=[...c.msgs].reverse().find(x=>x.role==="user"),imgs=IMG.get(lu)||[];let useImg=false;if(imgs.length){try{useImg=(await sample.limits()).images}catch(e){}if(!useImg)toast('این نمایشگر ارسال تصویر را پشتیبانی نمی‌کند')}
+  const r=await sample(hist,{cache:false,signal:ctl.signal,modelTier:/(سایت|وب|اپ|بازی|ویدیو|فیلم|لوگو|کد|برنامه|html|code|game|app|site|video|logo|svg|bug|fix)/i.test(lu?lu.content:'')||(lu&&lu.content.length>160)||/(ایده|خفن|بساز|طراحی|تحلیل|پروژه|بهینه)/.test(lu?lu.content:'')?"complex":"default",tools:TOOLS,...(useImg?{images:imgs.slice(0,(useImg&&useImg.maxCount)||4)}:{}),onText:({text})=>{m.content=text;cEl.innerHTML=md(text,true);livePrev(text);scroll()}});
+  m.content=r.text||m.content;
+ }catch(e){
+  if(ctl.signal.aborted){}
+  else if(e&&e.code==="none")m.content="⚠️ برای فعال‌شدن هوش مصنوعی، این صفحه را داخل claude.ai باز کنید و وارد حساب خود شوید.";
+  else if(e&&e.code==="not_granted")m.content=m.content||"⚠️ اجازه دسترسی داده نشد. دوباره تلاش کنید و اجازه را تأیید کنید.";
+  else if(e&&e.code==="rate_limited")m.content=m.content||"⚠️ تعداد درخواست‌ها زیاد است؛ کمی صبر کنید.";
+  else m.content=m.content||(e&&e.code==="no_server"?"⚠️ این نسخه برای کار کردن به سرور نیاز دارد (server.js). با کلید API اجراش کن و از آدرس سرور بازش کن؛ یا لینک artifact را داخل Claude باز کن.":"⚠️ خطایی رخ داد. دوباره تلاش کنید."+(e&&(e.message||e.code)?" ("+String(e.message||e.code).slice(0,160)+")":""));
+ }
+ if(!m.content)m.content="…";
+ c.msgs.push(m);save();setBusy(false);ctl=null;render();speak(m.content);autoPrev(m.content);if(PVPEND){PVPEND=false;$('#pv').classList.add('on')}
+}
+function autosize(){const t=$("#in");t.style.height="auto";t.style.height=Math.min(t.scrollHeight,180)+"px"}
+$("#in").addEventListener("input",autosize);
+$("#in").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey&&!e.isComposing&&!matchMedia('(pointer:coarse)').matches){e.preventDefault();send()}});
+$("#send").onclick=()=>busy?ctl&&ctl.abort():send();
+$("#new").onclick=()=>{cur=null;$("#side").classList.remove("open");render();$("#in").focus()};
+$("#menu").onclick=()=>$("#side").classList.toggle("open");
+$("#mode").onchange=()=>{const c=chat();if(c){c.mode=$("#mode").value;save()}};
+$("#clr").onclick=()=>{if(confirm("همهٔ گفتگوها پاک شود؟")){S=[];cur=null;save();render()}};
+$("#theme").onclick=()=>{const r=document.documentElement,dark=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;r.dataset.theme=dark?"light":"dark";store.set("nova.theme",r.dataset.theme)};
+$("#exp").onclick=async()=>{
+ const c=chat();if(!c)return;
+ const txt=c.msgs.map(m=>(m.role==="user"?"👤 ":"✦ ")+m.content).join("\n\n");
+ try{const d=await claude.use("downloads");if(d)await d.save({filename:"nova-chat.txt",data:txt})}catch(e){}
+};
+$("#w").addEventListener("click",e=>{
+ const t=e.target;
+ if(t.dataset.copy!==undefined){navigator.clipboard?.writeText(t.closest(".cb").querySelector("code").textContent);t.textContent="✓ کپی شد";setTimeout(()=>t.textContent="کپی",1200)}
+ else if(t.dataset.all!==undefined){const i=+t.closest(".m").dataset.i;navigator.clipboard?.writeText(chat().msgs[i].content);t.textContent="✓";setTimeout(()=>t.textContent="کپی",1200)}
+ else if(t.dataset.tg!==undefined){const p=t.closest('.cb').querySelector('pre');p.hidden=!p.hidden}else if(t.dataset.prev!==undefined)openPrev(t.closest('.cb').querySelector('code').textContent);else if(t.dataset.dl!==undefined){const cb=t.closest('.cb');dlFile(cb.querySelector('span').textContent,cb.querySelector('code').textContent)}else if(t.dataset.re!==undefined&&!busy){const c=chat(),i=+t.closest(".m").dataset.i;c.msgs=c.msgs.slice(0,i);save();render();reply(c)}
+});
+const IMG=new Map(),CFG=store.get('nova.cfg',{about:'',voice:false});
+let att=[];
+function calc(s){let i=0;s=s.replace(/\s+/g,'').replace(/\^/g,'**');
+const num=()=>{const m=/^\d*\.?\d+(e[+-]?\d+)?/i.exec(s.slice(i));if(!m)throw new Error('عبارت نامعتبر');i+=m[0].length;return +m[0]};
+const pri=()=>{if(s[i]==='('){i++;const v=add();if(s[i++]!==')')throw new Error('پرانتز');return v}if(s[i]==='-'){i++;return -pri()}if(s[i]==='+'){i++;return pri()}return num()};
+const pw=()=>{let v=pri();if(s.startsWith('**',i)){i+=2;v=v**pw()}return v};
+const mul=()=>{let v=pw();for(;;){const c=s[i];if(c==='*'&&s[i+1]!=='*'){i++;v*=pw()}else if(c==='/'){i++;v/=pw()}else if(c==='%'){i++;v%=pw()}else return v}};
+const add=()=>{let v=mul();while(s[i]==='+'||s[i]==='-'){const c=s[i++],r=mul();v=c==='+'?v+r:v-r}return v};
+const r=add();if(i<s.length)throw new Error('عبارت نامعتبر');return r}
+const TOOLS=[
+{name:'current_datetime',description:'تاریخ و ساعت فعلی کاربر',inputSchema:{type:'object',properties:{}},execute:()=>({iso:new Date().toISOString(),local:new Date().toLocaleString('fa-IR'),tz:Intl.DateTimeFormat().resolvedOptions().timeZone})},
+{name:'calculator',description:'محاسبهٔ دقیق عبارت ریاضی مثل (2+3)*4/5 یا 2^10',inputSchema:{type:'object',properties:{expression:{type:'string'}},required:['expression']},execute:({expression})=>({result:calc(String(expression))})}
+];
+let LIVE=null,CUR_M={};
+async function saveAs(name,data){try{const d=await claude.use('downloads');if(d)await d.save({filename:name,data})}catch(e){}}
+const runJS=code=>new Promise(res=>{const f=document.createElement('iframe'),id=Math.random().toString(36).slice(2);f.sandbox='allow-scripts';f.style.display='none';
+const done=o=>{clearTimeout(t);removeEventListener('message',h);f.remove();res(o)};
+const h=e=>{if(e.data&&e.data.id===id)done(e.data.out)},t=setTimeout(()=>done({error:'timeout یا اجرای کد مجاز نیست'}),6000);
+addEventListener('message',h);
+const S='<scr'+'ipt>',X='</scr'+'ipt>';
+f.srcdoc=S+`var L=[],E=null;console.log=console.info=console.warn=function(){L.push([].map.call(arguments,function(x){try{return typeof x==='object'?JSON.stringify(x):String(x)}catch(e){return String(x)}}).join(' '))};onerror=function(m){E=String(m)};`+X+S+String(code).replace(/<\/script/gi,'<'+String.fromCharCode(92)+'/script')+X+S+`setTimeout(function(){parent.postMessage({id:'${id}',out:{logs:L,error:E}},'*')},400)`+X;
+document.body.append(f)});
+TOOLS.push(
+{name:'run_javascript',description:'اجرای کد جاوااسکریپت (همگام یا با setTimeout کوتاه) و برگرداندن خروجی console.log. برای محاسبه، پردازش داده و تست الگوریتم.',inputSchema:{type:'object',properties:{code:{type:'string'}},required:['code']},execute:({code})=>runJS(code)},
+{name:'create_file',description:'ساخت فایل (کد، متن، CSV، HTML و...) برای دانلود کاربر. فایل html/svg همزمان پیش‌نمایش داده می‌شود.',inputSchema:{type:'object',properties:{filename:{type:'string'},content:{type:'string'}},required:['filename','content']},execute:({filename,content})=>{const n=String(filename).replace(/[^a-zA-Z0-9._-]/g,'_');CUR_M.files=(CUR_M.files||[]).concat({name:n,content:String(content)});if(/[.](html|svg)$/i.test(n))openPrev(String(content));return{ok:true,note:'فایل ساخته شد و برای کاربر نمایش داده می‌شود'}}},
+{name:'ask_user',description:'از کاربر یک سؤال با ۲ تا ۴ گزینهٔ دکمه‌ای بپرس و منتظر پاسخ بمان.',inputSchema:{type:'object',properties:{question:{type:'string'},options:{type:'array',items:{type:'string'}}},required:['question','options']},execute:({question,options})=>new Promise(res=>{if(!LIVE)return res({answer:null});const d=document.createElement('div');d.className='ask';const p=document.createElement('div');p.textContent=question;d.append(p);(options||[]).slice(0,4).forEach(o=>{const b=document.createElement('button');b.textContent=o;b.onclick=()=>{d.remove();res({answer:o})};d.append(b)});LIVE.append(d);scroll()})},
+{name:'remember',description:'ذخیرهٔ یک واقعیت مهم و ماندگار دربارهٔ کاربر در حافظهٔ دائمی (فقط وقتی کاربر خودش گفته).',inputSchema:{type:'object',properties:{fact:{type:'string'}},required:['fact']},execute:({fact})=>{CFG.mem=[...(CFG.mem||[]),String(fact).slice(0,200)].slice(-30);store.set('nova.cfg',CFG);return{ok:true}}}
+);
+const toast=m=>{const d=document.createElement('div');d.className='toast';d.textContent=m;document.body.append(d);setTimeout(()=>d.remove(),6000)};
+window.alert=toast;
+function cardEl(c){const d=document.createElement('div');d.className='card '+c.t;
+if(c.t==='chart')d.innerHTML=(c.title?'<b>'+esc(String(c.title))+'</b>':'')+c.svg;
+else d.innerHTML='<b>📋 '+esc(String(c.title||'برنامهٔ کار'))+'</b>'+c.steps.map(s=>`<div class="${s.done?'d':''}">${s.done?'✅':'⬜'} ${esc(String(s.text))}</div>`).join('');
+return d}
+function pushCard(c){CUR_M.cards=CUR_M.cards||[];if(c.t==='plan'){CUR_M.cards=CUR_M.cards.filter(x=>x.t!=='plan');if(LIVE)LIVE.querySelectorAll('.card.plan').forEach(x=>x.remove())}CUR_M.cards.push(c);if(LIVE)LIVE.append(cardEl(c));scroll()}
+function chartSVG(a){const L=(a.labels||[]).map(String),V=(a.values||[]).map(Number),W=520,H=240,p=36,n=V.length||1,mx=Math.max(...V,1),bw=(W-2*p)/n,X=i=>p+bw*i+bw/2,Y=v=>H-p/2-(H-p)*Math.max(v,0)/mx;
+let s=`<svg viewBox="0 0 ${W} ${H+24}" style="width:100%;max-width:560px;direction:ltr" font-size="11" fill="currentColor"><line x1="${p/2}" x2="${W-p/2}" y1="${H-p/2}" y2="${H-p/2}" stroke="currentColor" opacity=".3"/>`;
+if(a.type==='line')s+=`<polyline fill="none" stroke="var(--ac)" stroke-width="3" stroke-linejoin="round" points="${V.map((v,i)=>X(i)+','+Y(v)).join(' ')}"/>`+V.map((v,i)=>`<circle cx="${X(i)}" cy="${Y(v)}" r="4" fill="var(--ac)"/>`).join('');
+else s+=V.map((v,i)=>`<rect x="${X(i)-bw*.35}" y="${Y(v)}" width="${bw*.7}" height="${H-p/2-Y(v)}" rx="5" fill="var(--ac)"/>`).join('');
+s+=V.map((v,i)=>`<text x="${X(i)}" y="${Y(v)-6}" text-anchor="middle" opacity=".8">${v}</text><text x="${X(i)}" y="${H-p/2+16}" text-anchor="middle">${esc(L[i]||'')}</text>`).join('');
+return s+'</svg>'}
+TOOLS.push(
+{name:'draw_chart',description:'رسم نمودار میله‌ای (bar) یا خطی (line) داخل چت',inputSchema:{type:'object',properties:{type:{type:'string',enum:['bar','line']},title:{type:'string'},labels:{type:'array',items:{type:'string'}},values:{type:'array',items:{type:'number'}}},required:['labels','values']},execute:a=>{pushCard({t:'chart',title:a.title,svg:chartSVG(a)});return{ok:true}}},
+{name:'update_plan',description:'نمایش یا به‌روزرسانی چک‌لیست مراحل کار برای کارهای چندمرحله‌ای',inputSchema:{type:'object',properties:{title:{type:'string'},steps:{type:'array',items:{type:'object',properties:{text:{type:'string'},done:{type:'boolean'}},required:['text']}}},required:['steps']},execute:a=>{pushCard({t:'plan',title:a.title,steps:(a.steps||[]).slice(0,15)});return{ok:true}}},
+{name:'set_timer',description:'تنظیم تایمر؛ بعد از پایان به کاربر اعلان می‌دهد',inputSchema:{type:'object',properties:{seconds:{type:'number'},label:{type:'string'}},required:['seconds']},execute:({seconds,label})=>{const s=Math.min(Math.max(+seconds||1,1),86400);setTimeout(()=>toast('⏰ '+(label||'تایمر تمام شد')),s*1000);return{ok:true,seconds:s}}}
+);
+TOOLS.push(
+{name:'edit_code',description:'ویرایش کد وب‌سایت/اپ فعلی با جایگزینی دقیق متن. هر old باید دقیقاً یک بار در کد باشد. برای تغییرات کوچک به‌جای نوشتن دوبارهٔ کل کد از این استفاده کن.',inputSchema:{type:'object',properties:{edits:{type:'array',items:{type:'object',properties:{old:{type:'string'},new:{type:'string'}},required:['old','new']}}},required:['edits']},execute:({edits})=>{let c=(chat()&&chat().pv)||PV;if(!c)return{error:'هنوز کدی ساخته نشده'};const L=edits||[];for(let i=0;i<L.length;i++){const n=c.split(L[i].old).length-1;if(n!==1)return{error:'edit '+(i+1)+': متن old '+n+' بار پیدا شد (باید دقیقاً ۱ بار باشد)؛ هیچ تغییری اعمال نشد'};c=c.replace(L[i].old,()=>L[i].new)}openPrev(c);return{ok:true,applied:L.length}}},
+{name:'read_code',description:'خواندن بخشی از کد فعلی وب‌سایت/اپ (start و length)',inputSchema:{type:'object',properties:{start:{type:'number'},length:{type:'number'}}},execute:({start,length})=>{const c=(chat()&&chat().pv)||PV||'',s=Math.max(+start||0,0);return{total:c.length,text:c.slice(s,s+Math.min(+length||20000,50000))}}},
+{name:'make_image',description:'ساخت تصویر برداری (SVG) برای لوگو، آیکون، پوستر، بنر، ایلاستریشن و الگو. SVG کامل با viewBox بده. عکس واقعی نمی‌سازد.',inputSchema:{type:'object',properties:{title:{type:'string'},svg:{type:'string'},width:{type:'number'},height:{type:'number'}},required:['svg']},execute:a=>{let s=String(a.svg).replace(/<script[\s\S]*?<\/script>/gi,'').replace(/\son\w+\s*=\s*("[^"]*"|'[^']*')/gi,'');if(!/<svg[\s>]/i.test(s))return{error:'svg نامعتبر است'};if(!/xmlns=/.test(s))s=s.replace('<svg','<svg xmlns="http://www.w3.org/2000/svg"');pushCard({t:'img',title:a.title,svg:s,w:Math.min(+a.width||1024,4096),h:Math.min(+a.height||1024,4096),name:'nova-'+Date.now().toString(36)});return{ok:true}}},
+{name:'make_video',description:'ساخت ویدیوی انیمیشنی بدون صدا (WebM). code باید تابع draw(ctx,t,W,H) را تعریف کند (کانواس دوبعدی، t به ثانیه از صفر تا duration). منابع بیرونی ندارد.',inputSchema:{type:'object',properties:{title:{type:'string'},code:{type:'string'},duration:{type:'number'},width:{type:'number'},height:{type:'number'}},required:['code']},execute:a=>{pushCard({t:'video',title:a.title,code:String(a.code),dur:Math.min(Math.max(+a.duration||5,2),30),w:Math.min(Math.max(+a.width||1280,320),1920),h:Math.min(Math.max(+a.height||720,240),1080),name:'nova-video'});return{ok:true,note:'ویدیو در چت پخش و ضبط می‌شود'}}}
+);
+TOOLS.push(
+{name:'test_site',description:'تست خودکار وب‌سایت/اپ فعلی: همهٔ دکمه‌ها و لینک‌ها را کلیک می‌کند و خطاهای JS، لینک‌های بی‌مقصد و دکمه‌های بی‌اثر را گزارش می‌دهد. بعد از هر ساخت یا تغییر مهم صدایش بزن و مشکلات را با edit_code رفع کن.',inputSchema:{type:'object',properties:{}},execute:()=>new Promise(res=>{const code=(chat()&&chat().pv)||PV;if(!code)return res({error:'هنوز سایتی ساخته نشده'});const id='t'+Math.random().toString(36).slice(2),f=document.createElement('iframe');f.sandbox='allow-scripts';f.style.cssText='position:fixed;left:-9999px;top:0;width:390px;height:800px;border:0';const done=r=>{clearTimeout(tm);removeEventListener('message',hn);f.remove();res(r)};const hn=e=>{if(e.data&&e.data.id===id&&e.data.report){const r=e.data.report;done({ok:!r.errors.length&&!r.dead.length,clicked:r.clicked,errors:r.errors,suspicious:r.dead})}};const tm=setTimeout(()=>done({error:'تست زمان‌بر شد (حلقهٔ بی‌نهایت یا خطای سینتکس)'}),9000);addEventListener('message',hn);f.srcdoc=guard(code,EARLY)+'<scr'+'ipt>var __ID='+JSON.stringify(id)+';'+PROBE+'</scr'+'ipt>';document.body.append(f)})},
+{name:'suggest_next',description:'نمایش ۲ تا ۴ پیشنهاد کوتاه برای قدم بعدی به‌صورت دکمه؛ با لمس هر کدام به‌عنوان پیام کاربر ارسال می‌شود.',inputSchema:{type:'object',properties:{options:{type:'array',items:{type:'string'}}},required:['options']},execute:({options})=>{pushCard({t:'chips',items:(options||[]).slice(0,4).map(String)});return{ok:true}}},
+{name:'think',description:'یادداشت کوتاه برنامه‌ریزی یا تحلیل قبل از کارهای بزرگ (برای نمایش در خلاصهٔ مراحل).',inputSchema:{type:'object',properties:{notes:{type:'string'}},required:['notes']},execute:()=>({ok:true})}
+);
+TOOLS.forEach(t=>{const e=t.execute;t.execute=a=>{if(LIVE){const s=document.createElement('div');s.className='tc';s.textContent=({calculator:'دارم محاسبه می‌کنم…',current_datetime:'دارم ساعت و تاریخ رو چک می‌کنم…',run_javascript:'دارم کد رو اجرا و تست می‌کنم…',create_file:'دارم فایل رو می‌سازم…',ask_user:'یه سؤال دارم ازت…',remember:'دارم این رو یادداشت می‌کنم…',draw_chart:'دارم نمودار می‌کشم…',update_plan:'دارم برنامهٔ کار رو به‌روز می‌کنم…',set_timer:'دارم تایمر می‌ذارم…',make_image:'دارم طراحی می‌کنم…',make_video:'دارم ویدیو می‌سازم…',edit_code:'دارم کد رو ویرایش می‌کنم…',read_code:'دارم کد رو می‌خونم…',test_site:'دارم همهٔ دکمه‌ها رو تست می‌کنم…',suggest_next:'دارم قدم‌های بعدی رو آماده می‌کنم…',think:'دارم فکر و برنامه‌ریزی می‌کنم…'})[t.name]||'دارم روش کار می‌کنم…';LIVE.querySelectorAll('.tc').forEach(x=>x.remove());s.onclick=()=>showSummary(CUR_M);LIVE.prepend(s)}const act={name:t.name,input:clip(a),ts:Date.now()};(CUR_M.acts=CUR_M.acts||[]).push(act);try{const r=e(a);if(r&&typeof r.then==='function')return r.then(v=>{act.out=clip(v);return v},x=>{act.err=String((x&&x.message)||x);throw x});act.out=clip(r);return r}catch(x){act.err=String((x&&x.message)||x);throw x}}});
+$('#cm').onclick=()=>{CFG.mem=[];store.set('nova.cfg',CFG);$('#cm').textContent='✓ پاک شد'};
+const fi=document.createElement('input');fi.type='file';fi.multiple=true;fi.accept='image/*,.txt,.md,.csv,.json,.js,.ts,.py,.html,.css,.xml,.yml,.yaml,.log,.sql,.java,.c,.cpp,.go,.rs,.php';
+fi.onchange=async()=>{for(const f of fi.files){if(f.type.startsWith('image/'))att.push({name:f.name,img:f});else if(f.size<2e6){try{att.push({name:f.name,text:(await f.text()).slice(0,200000)})}catch(e){}}else alert(f.name+' بزرگ است (حداکثر ۲ مگابایت)')}fi.value='';renderAtt()};
+$('#att').onclick=()=>fi.click();
+function renderAtt(){const a=$('#atts');a.innerHTML='';att.forEach((f,i)=>{const b=document.createElement('button');b.textContent=(f.img?'🖼 ':'📄 ')+f.name+' ✕';b.onclick=()=>{att.splice(i,1);renderAtt()};a.append(b)})}
+$('#in').addEventListener('paste',e=>{for(const it of e.clipboardData?.items||[])if(it.type.startsWith('image/')){att.push({name:'image.png',img:it.getAsFile()});renderAtt()}});
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=null;
+$('#mic').onclick=()=>{if(!SR){alert('مرورگر شما از تشخیص گفتار پشتیبانی نمی‌کند.');return}if(rec){rec.stop();return}
+rec=new SR();rec.lang='fa-IR';rec.interimResults=true;const base=$('#in').value;
+rec.onresult=e=>{$('#in').value=(base+' '+[...e.results].map(r=>r[0].transcript).join('')).trim();autosize()};
+rec.onerror=()=>{};rec.onend=()=>{rec=null;$('#mic').textContent='🎤'};
+$('#mic').textContent='⏺';try{rec.start()}catch(e){rec=null;$('#mic').textContent='🎤'}};
+function speak(t){if(!CFG.voice||!window.speechSynthesis)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t.replace(/```[\s\S]*?```/g,'').replace(/[*#`]/g,''));u.lang=/[\u0600-\u06FF]/.test(t)?'fa-IR':'en-US';speechSynthesis.speak(u)}
+$('#tts').textContent=CFG.voice?'🔊':'🔇';
+$('#tts').onclick=()=>{CFG.voice=!CFG.voice;if(!CFG.voice)window.speechSynthesis?.cancel();$('#tts').textContent=CFG.voice?'🔊':'🔇';store.set('nova.cfg',CFG)};
+$('#cfg').onclick=()=>{$('#about').value=CFG.about||'';$('#dlg').showModal()};
+$('#sv').onclick=()=>{CFG.about=$('#about').value.trim();store.set('nova.cfg',CFG);$('#dlg').close()};
+$('#q').oninput=e=>{QV=e.target.value.trim();renderList()};
+function openPrev(code){PV=code;$('#pvf').srcdoc=/<svg/i.test(code)&&!/<html/i.test(code)?'<body style="margin:0;display:grid;place-items:center;min-height:100vh">'+code:code;$('#pv').classList.add('on')}
+function autoPrev(t){const m=t.match(/```(?:html|svg)\s*([\s\S]*?)```/i);if(m)openPrev(m[1])}
+async function dlFile(l,c){try{const d=await claude.use('downloads');if(!d){alert('دانلود در دسترس نیست');return}await d.save({filename:'nova.'+(({html:'html',svg:'svg',python:'py',javascript:'js',js:'js',css:'css',json:'json'})[l.toLowerCase()]||'txt'),data:c})}catch(e){}}
+$('#pvx').onclick=()=>{$('#pv').classList.remove('on');$('#pvf').srcdoc=''};
+$('#pvr').onclick=()=>{$('#pvf').srcdoc='';setTimeout(()=>$('#pvf').srcdoc=PV,50)};
+$('#pvd').onclick=()=>dlFile(/<svg/i.test(PV)&&!/<html/i.test(PV)?'svg':'html',PV);
+const _md=md;let LP=false;
+md=(t,live)=>{
+const tabs=[];
+const src=t.split(/(```[\s\S]*?(?:```|$))/).map(p=>p.startsWith('```')?p:p.replace(/(^|\n)((?:[ \t]*\|.+\|[ \t]*(?:\n|$)){2,})/g,(m,pre,blk)=>{
+const body=blk.trim().split('\n').map(r=>r.trim().replace(/^\||\|$/g,'').split('|').map(c=>c.trim())).filter(r=>!r.every(c=>/^:?-{2,}:?$/.test(c)));
+tabs.push('<div class="tw"><table>'+body.map((r,i)=>'<tr>'+r.map(c=>(i?'<td>':'<th>')+_md(c).replace(/<\/?p>/g,'')+(i?'</td>':'</th>')).join('')+'</tr>').join('')+'</table></div>');
+return pre+'\u0001'+(tabs.length-1)+'\u0001\n'})).join('');
+let h=_md(src).replace(/<p>\u0001(\d+)\u0001<\/p>/g,(_,i)=>tabs[i]);
+let k=0;const open=live&&((t.match(/```/g)||[]).length%2===1),tot=(h.match(/<div class="cb">/g)||[]).length;
+h=h.replace(/<div class="cb"><div><span>([^<]*)<\/span>(<span>[\s\S]*?<\/span>)<\/div><pre><code>([\s\S]*?)<\/code><\/pre><\/div>/g,(m,l,b,c)=>{const n=c.split('\n').length;
+return open&&++k===tot?`<div class="cb wr"><div><span>${l}</span><span class="ln">✍️ دارم کد می‌نویسم… ${n} خط</span></div><i class="bar"></i></div>`:`<div class="cb"><div><span>${l}</span><span class="ln">${n} خط</span><span>${b.slice(6,-7)}<button data-tg>{ } کد</button></span></div><pre hidden><code>${c}</code></pre></div>`});
+return h.replace(/\[([^\]<]+)\]\((https?:\/\/[^)\s]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>').replace(/<p>&gt;\s?([\s\S]*?)<\/p>/g,'<blockquote>$1</blockquote>').replace(/<p>(-{3,}|\*{3,})<\/p>/g,'<hr>')};
+function livePrev(t){if(LP)return;const m=t.match(/```(?:html|svg)\s*([\s\S]*?)```/i);if(m&&/<\/html>|<\/svg>/i.test(m[1])){LP=true;openPrev(m[1])}}
+Object.defineProperty(MODES,'custom',{get:()=>CFG.persona||'یک دستیار هوشمند و خلاق هستی.'});
+SUG.push('یه بازی ماریوی ساده بساز','یک وب‌سایت شخصی خفن برام بساز','نمودار فروش ماهانهٔ یه فروشگاه رو رسم کن','یه برنامهٔ ورزشی هفتگی بهم بده');
+const COLS=[['#6d4aff','#a24bff'],['#2563eb','#06b6d4'],['#059669','#84cc16'],['#e11d48','#f97316'],['#d97706','#facc15'],['#0f766e','#22d3ee']];
+function setAc(i){const c=COLS[i]||COLS[0],r=document.documentElement.style;r.setProperty('--ac',c[0]);r.setProperty('--ac2',c[1]);CFG.ac=i;store.set('nova.cfg',CFG)}
+COLS.forEach((c,i)=>{const b=document.createElement('button');b.style.background='linear-gradient(135deg,'+c[0]+','+c[1]+')';b.onclick=()=>setAc(i);$('#cols').append(b)});
+
+$('#cfg').addEventListener('click',()=>{$('#persona').value=CFG.persona||''});
+$('#sv').addEventListener('click',()=>{CFG.persona=$('#persona').value.trim();store.set('nova.cfg',CFG)});
+$('#bkx').onclick=()=>saveAs('nova-backup.json',JSON.stringify({S,CFG}));
+const bi=document.createElement('input');bi.type='file';bi.accept='.json';
+bi.onchange=async()=>{try{const d=JSON.parse(await bi.files[0].text());if(Array.isArray(d.S)){S=d.S;save();if(d.CFG){Object.assign(CFG,d.CFG);store.set('nova.cfg',CFG)}render();toast('✓ بازیابی شد')}}catch(e){toast('فایل نامعتبر است')}bi.value=''};
+$('#bki').onclick=()=>bi.click();
+$('#pvm').onclick=()=>$('#pvf').classList.toggle('m');
+$('#pvz').onclick=()=>$('#pv').classList.toggle('fs');
+$('#pve').onclick=()=>{const c=$('#pvc');if(c.hidden){c.value=PV;c.hidden=false;$('#pvf').style.display='none'}else{c.hidden=true;$('#pvf').style.display='';openPrev(c.value)}};
+addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();$('#new').click()}else if(e.key==='Escape'&&!document.querySelector('dialog[open]')){if(busy&&ctl)ctl.abort();else $('#pvx').click()}});
+$('#w').addEventListener('dblclick',e=>{const u=e.target.closest('.m.u'),c=chat();if(!u||!c||busy)return;const i=+u.dataset.i;$('#in').value=c.msgs[i].show??c.msgs[i].content;c.msgs=c.msgs.slice(0,i);save();render();autosize();$('#in').focus()});
+async function addFiles(fl){for(const f of fl){if(f.type.startsWith('image/'))att.push({name:f.name,img:f});else if(f.size<2e6){try{att.push({name:f.name,text:(await f.text()).slice(0,200000)})}catch(e){}}}renderAtt()}
+addEventListener('dragover',e=>e.preventDefault());addEventListener('drop',e=>{e.preventDefault();addFiles(e.dataTransfer.files)});
+let clrT=0;$('#clr').onclick=()=>{if(Date.now()-clrT<3000){S=[];cur=null;save();render();$('#clr').textContent='🗑 پاک‌سازی'}else{clrT=Date.now();$('#clr').textContent='⚠️ دوباره بزن';setTimeout(()=>$('#clr').textContent='🗑 پاک‌سازی',3000)}};
+const GS='<scr'+'ipt>'+`document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href]');if(!a)return;var h=a.getAttribute('href')||'';if(h.charAt(0)==='#'){e.preventDefault();if(h.length>1){var t=document.getElementById(h.slice(1));if(t)t.scrollIntoView({behavior:'smooth'})}return}e.preventDefault();if(/^(https?:|mailto:|tel:)/i.test(h))window.open(h,'_blank')},true);document.addEventListener('submit',function(e){e.preventDefault()},true);`+'</scr'+'ipt>';
+function guard(code){const h=String(code);if(/<head(\s[^>]*)?>/i.test(h))return h.replace(/<head(\s[^>]*)?>/i,m=>m+GS);if(/<html(\s[^>]*)?>/i.test(h))return h.replace(/<html(\s[^>]*)?>/i,m=>m+GS);if(/<!doctype[^>]*>/i.test(h))return h.replace(/<!doctype[^>]*>/i,m=>m+GS);return GS+h}
+let pvExpect=0,PVH=[],PVPEND=false;
+function openPrev(code,noH){code=String(code);if(PV&&PV!==code&&!noH){PVH.push(PV);PVH=PVH.slice(-15)}PV=code;const c=chat();if(c){c.pv=code.slice(0,150000);save()}
+const d=/<svg/i.test(code)&&!/<html/i.test(code)?'<body style="margin:0;display:grid;place-items:center;min-height:100vh;background:#fff">'+code:code;
+pvExpect=1;$('#pvf').srcdoc=guard(d)+'<!--'+Date.now()+'-->';if(busy&&matchMedia('(max-width:760px)').matches&&!$('#pv').classList.contains('on'))PVPEND=true;else $('#pv').classList.add('on')}
+$('#pvf').addEventListener('load',()=>{if(pvExpect){pvExpect=0;return}if(PV&&$('#pv').classList.contains('on')){pvExpect=1;$('#pvf').srcdoc=guard(PV)+'<!--'+Date.now()+'-->'}});
+$('#pvr').onclick=()=>openPrev(PV,true);
+$('#pvu').onclick=()=>{if(PVH.length)openPrev(PVH.pop(),true);else toast('نسخهٔ قبلی نیست')};
+$('#pvo').onclick=()=>{const c=chat();if(c&&c.pv)openPrev(c.pv,true);else toast('هنوز سایتی ساخته نشده')};
+const OKX=['gif','png','jpg','jpeg','webp','mp4','webm','mov','txt','json','md','docx','pptx','epub','csv','ttf','html','svg','pdf','xlsx','zip'];
+async function saveAs(name,data){try{const d=await claude.use('downloads');if(!d){toast('دانلود در این محیط ممکن نیست');return}const x=(String(name).split('.').pop()||'').toLowerCase();if(!OKX.includes(x))name+='.txt';await d.save({filename:name,data})}catch(e){if(e&&e.code&&e.code!=='declined')toast('ذخیره نشد: '+e.code)}}
+async function dlFile(l,c){const x=String(l||'txt').toLowerCase();return saveAs('nova.'+(({markdown:'md',javascript:'js',python:'py'})[x]||x),c)}
+const svgURL=s=>'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(s);
+function svgToPng(svg,w,h){return new Promise(res=>{const im=new Image();im.onload=()=>{const cv=document.createElement('canvas');cv.width=w||im.naturalWidth||1024;cv.height=h||im.naturalHeight||1024;cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);cv.toBlob(b=>res(b),'image/png')};im.onerror=()=>{toast('تبدیل به PNG نشد');res(null)};im.src=svgURL(svg)})}
+const BOOT=`(function(){var cv=document.getElementById('c'),ctx=cv.getContext('2d'),ch=[],t0=null,fin=false,rec=null;try{var st=cv.captureStream(30),mt=MediaRecorder.isTypeSupported('video/webm;codecs=vp9')?'video/webm;codecs=vp9':'video/webm';rec=new MediaRecorder(st,{mimeType:mt,videoBitsPerSecond:8000000});rec.ondataavailable=function(e){if(e.data&&e.data.size)ch.push(e.data)};rec.onstop=function(){parent.postMessage({id:__ID,blob:new Blob(ch,{type:'video/webm'})},'*')};rec.start()}catch(e){parent.postMessage({id:__ID,err:String(e)},'*')}function L(ts){if(t0===null)t0=ts;var t=(ts-t0)/1000;ctx.save();ctx.clearRect(0,0,__W,__H);try{draw(ctx,fin?t%__D:Math.min(t,__D),__W,__H)}catch(e){}ctx.restore();if(!fin&&t>=__D){fin=true;if(rec&&rec.state!=='inactive')rec.stop()}requestAnimationFrame(L)}requestAnimationFrame(L)})();`;
+function videoDoc(c,id){const X='</scr'+'ipt>',O='<scr'+'ipt>';return '<body style="margin:0;background:#000"><canvas id="c" width="'+c.w+'" height="'+c.h+'" style="width:100%;height:100%;display:block"></canvas>'+O+'var __W='+c.w+',__H='+c.h+',__D='+c.dur+',__ID='+JSON.stringify(id)+';window.onerror=function(m){parent.postMessage({id:__ID,err:String(m)},"*")};'+X+O+String(c.code).split('</'+'script').join('<'+String.fromCharCode(92)+'/script')+X+O+BOOT+X}
+function cardEl(c){const d=document.createElement('div');d.className='card '+c.t;const T=c.title?'<b>'+esc(String(c.title))+'</b>':'';
+if(c.t==='chart')d.innerHTML=T+c.svg;
+else if(c.t==='img'){d.innerHTML=T+'<img class="im" alt=""><div class="tools"><button data-a>⬇ SVG</button><button data-b>⬇ PNG</button></div>';d.querySelector('img').src=svgURL(c.svg);d.querySelector('[data-a]').onclick=()=>saveAs((c.name||'image')+'.svg',c.svg);d.querySelector('[data-b]').onclick=async()=>{const b=await svgToPng(c.svg,c.w,c.h);if(b)saveAs((c.name||'image')+'.png',b)}}
+else if(c.t==='video'){const id='v'+Math.random().toString(36).slice(2);d.innerHTML=T+'<iframe class="vf" sandbox="allow-scripts"></iframe><div class="tools"><button data-v disabled>⏳ در حال ضبط…</button></div>';const f=d.querySelector('iframe'),b=d.querySelector('[data-v]');f.style.aspectRatio=c.w+'/'+c.h;const h=e=>{if(!e.data||e.data.id!==id)return;if(e.data.blob){b.disabled=false;b.textContent='⬇ دانلود ویدیو (WebM)';b.onclick=()=>saveAs((c.name||'video')+'.webm',e.data.blob)}else b.textContent='⚠️ ضبط ممکن نیست؛ فقط پخش'};addEventListener('message',h);f.srcdoc=videoDoc(c,id)}
+else d.innerHTML='<b>📋 '+esc(String(c.title||'برنامهٔ کار'))+'</b>'+(c.steps||[]).map(s=>`<div class="${s.done?'d':''}">${s.done?'✅':'⬜'} ${esc(String(s.text))}</div>`).join('');
+return d}
+MODES.chat=`تو «نووا» هستی؛ یک دستیار همه‌کاره و بسیار توانا. نوع درخواست را خودت تشخیص بده و بدون سؤال اضافه انجام بده: کدنویسی و دیباگ، ساخت وب‌سایت/اپ/بازی، لوگو و تصویر برداری (make_image)، ویدیوی انیمیشنی (make_video)، نمودار (draw_chart)، تحلیل داده، نوشتن، ترجمه، آموزش و برنامه‌ریزی.
+قوانین وب‌سایت/اپ/بازی:
+۱) یک فایل کامل HTML (CSS و JS داخل خودش) داخل یک بلاک html بده. موبایل‌اول و ریسپانسیو، راست‌به‌چپ اگر فارسی، سازگار با تاریک/روشن (prefers-color-scheme)، تایپوگرافی و فاصله‌گذاری حرفه‌ای، سایه و گوشه‌گرد، انیمیشن نرم، حالت hover/active/focus، بافت و گرافیک با CSS/SVG (گرادیان، نویز feTurbulence، الگوهای خطی، آیکون SVG یا ایموجی).
+۲) هیچ منبع بیرونی نگذار (بدون CDN، فونت، تصویر یا fetch)؛ فقط فونت سیستم و گرافیک inline.
+۳) همهٔ دکمه‌ها، لینک‌ها، منوها، تب‌ها، فرم‌ها و مودال‌ها باید واقعاً کار کنند و به منطق JS وصل باشند. لینک‌های داخلی با #id و اسکرول نرم؛ فرم‌ها اعتبارسنجی و پیام موفقیت نشان بدهند؛ هیچ دکمهٔ بی‌کار، href="#" خالی، location.href، location.reload یا ناوبری به صفحهٔ دیگر نگذار.
+۴) localStorage در پیش‌نمایش ممکن است در دسترس نباشد؛ همیشه داخل try/catch و با حافظهٔ موقت جایگزین.
+۵) قبل از تحویل ذهنی هر دکمه را تست کن و مطمئن شو خطای JS نداری.
+۶) برای تغییر روی سایت موجود از edit_code استفاده کن؛ کل کد را فقط برای بازطراحی بزرگ دوباره بنویس. بعد از هر تغییر خلاصه بگو چه عوض شد.
+تصویر/لوگو: SVG تمیز و حرفه‌ای با viewBox بساز؛ عکس واقعی نمی‌توانی بسازی و این را صادقانه بگو. ویدیو: کد make_video باید تابع draw(ctx,t,W,H) را تعریف کند (t ثانیه)، کانواس دوبعدی، بدون صدا، ۳ تا ۱۵ ثانیه.
+در متن پاسخ فقط خلاصهٔ کوتاه کار را بگو و کد را تکرار نکن. اگر چیزی از توانت خارج است (جستجوی اینترنت، عکس واقعی، صدا) صادقانه بگو.`;
+function syncT(){const r=document.documentElement.dataset.theme,dark=r?r==='dark':matchMedia('(prefers-color-scheme:dark)').matches;$('#thm').textContent=dark?'☀️':'🌙';const m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('content',dark?'#0f0e13':'#f6f5f2')}
+$('#thm').onclick=()=>{$('#theme').click();syncT()};
+try{matchMedia('(prefers-color-scheme:dark)').addEventListener('change',syncT)}catch(e){}
+$('#main').addEventListener('click',e=>{if(e.target.closest('#menu'))return;$('#side').classList.remove('open')});
+const clip=v=>{try{return JSON.parse(JSON.stringify(v,(k,x)=>typeof x==='string'&&x.length>20000?x.slice(0,20000)+'…':x))}catch(e){return String(v)}};
+const LBLS={calculator:'محاسبه',current_datetime:'بررسی ساعت و تاریخ',run_javascript:'اجرای کد جاوااسکریپت',create_file:'ساخت فایل',ask_user:'پرسیدن از شما',remember:'ذخیره در حافظه',draw_chart:'رسم نمودار',update_plan:'به‌روزرسانی برنامهٔ کار',set_timer:'تنظیم تایمر',make_image:'ساخت تصویر',make_video:'ساخت ویدیو',edit_code:'ویرایش کد سایت',read_code:'خواندن کد'};
+const LBL=(n,a)=>(LBLS[n]||n)+(a&&a.filename?': '+a.filename:a&&a.title?': '+a.title:'');
+const ICO={create_file:'📄',edit_code:'✎',read_code:'👁',make_image:'🖼',make_video:'🎬',run_javascript:'</>',draw_chart:'📊',update_plan:'📋',calculator:'🧮',set_timer:'⏰',remember:'🧠',ask_user:'❓',current_datetime:'🕘'};
+const mk=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e};
+function sheet(title,node,back){$('#sht').textContent=title;const c=$('#shc');c.innerHTML='';c.append(node);$('#shk').hidden=!back;$('#shk').onclick=back||null;$('#sh').classList.add('on')}
+$('#shx').onclick=()=>$('#sh').classList.remove('on');
+$('#sh').addEventListener('click',e=>{if(e.target.id==='sh')$('#sh').classList.remove('on')});
+addEventListener('keydown',e=>{if(e.key==='Escape')$('#sh').classList.remove('on')});
+function stepsOf(m){const L=[];[...String(m.content||'').matchAll(/```(\w*)\s*([\s\S]*?)```/g)].forEach(f=>L.push({label:'نوشتن کد '+(f[1]||'code'),icon:'</>',code:f[2],lang:f[1]}));(m.acts||[]).forEach(a=>L.push({label:LBL(a.name,a.input),icon:ICO[a.name]||'🛠',act:a}));return L}
+function showSummary(m){const wrap=mk('div','tl');const S2=stepsOf(m);if(!S2.length)wrap.append(mk('p',null,'مرحله‌ای ثبت نشده'));S2.forEach(s=>{const r=mk('div','it2');r.append(mk('i','dt'));const inner=mk('button','rw');inner.append(mk('span',null,s.label),mk('span',null,s.icon));inner.onclick=()=>showDetail(s,()=>showSummary(m));r.append(inner);wrap.append(r)});sheet('خلاصه',wrap)}
+function btns(d,l,code){const b=mk('div','bt');const cp=mk('button',null,'کپی');cp.onclick=()=>{if(navigator.clipboard)navigator.clipboard.writeText(code);toast('کپی شد')};b.append(cp);const dl=mk('button',null,'⬇ دانلود');dl.onclick=()=>dlFile(l||'txt',code);b.append(dl);if(/^(html|svg)$/i.test(l||'')){const pv=mk('button',null,'▶ پیش‌نمایش');pv.onclick=()=>{$('#sh').classList.remove('on');openPrev(code)};b.append(pv)}d.append(b)}
+function showDetail(s,back){const d=mk('div','dtl');const add=(t,txt)=>{d.append(mk('h4',null,t));d.append(mk('pre',null,txt))};
+if(s.code!=null){add('کد '+(s.lang||''),s.code);btns(d,s.lang,s.code)}else{const a=s.act,inp=a.input||{},sh={};Object.keys(inp).forEach(k=>{const v=inp[k];if(typeof v==='string'&&(v.length>80||v.indexOf('\n')>=0)){add(k,v);if(/^(content|code|svg)$/.test(k))btns(d,k==='svg'?'svg':(a.name==='create_file'?String(inp.filename||'txt').split('.').pop():'js'),v)}else sh[k]=v});if(Object.keys(sh).length)add('درخواست',JSON.stringify(sh,null,2));add(a.err?'خطا':'نتیجه',a.err||(a.out===undefined?'…':JSON.stringify(a.out,null,2)))}
+sheet(s.label,d,back)}
+function fileKind(n){const x=String(n).split('.').pop().toLowerCase();return ({html:'Website',svg:'Image',png:'Image',webm:'Video',json:'Data',csv:'Data',txt:'Text',md:'Text'}[x]||'Code')+' · '+x.toUpperCase()}
+function openFile(l,code,name){l=String(l||'').toLowerCase();if(l==='html'||l==='htm'){openPrev(code);return}const w=mk('div','dtl');if(l==='svg'){const im=mk('img','im');im.src=svgURL(code);w.append(im)}else w.append(mk('pre',null,code));btns(w,l,code);sheet(name||(l==='svg'?'Image':'Code · '+l.toUpperCase()),w)}
+function showFiles(){const c=chat(),w=mk('div','tl'),rows=[];if(c&&c.pv)rows.push({t:'سایت / اپ (آخرین نسخه)',i:'🖥',f:()=>{$('#sh').classList.remove('on');openPrev(c.pv,true)}});(c?c.msgs:[]).forEach(m=>{(m.files||[]).forEach(f=>rows.push({t:f.name,i:'📄',f:()=>openFile(f.name.split('.').pop(),f.content,f.name)}));(m.cards||[]).forEach(k=>{if(k.t==='img')rows.push({t:k.title||'تصویر',i:'🖼',f:()=>openFile('svg',k.svg,k.title)});if(k.t==='video')rows.push({t:k.title||'ویدیو',i:'🎬',f:()=>{$('#sh').classList.remove('on');toast('ویدیو داخل خود پیام پخش می‌شود')}})});[...String(m.content||'').matchAll(/```(\w*)\s*([\s\S]*?)```/g)].forEach(f=>rows.push({t:'کد '+(f[1]||''),i:'</>',f:()=>openFile(f[1],f[2])}))});
+if(!rows.length)w.append(mk('p',null,'هنوز فایلی ساخته نشده'));rows.forEach(r=>{const x=mk('div','it2');x.append(mk('i','dt'));const b=mk('button','rw');b.append(mk('span',null,r.t),mk('span',null,r.i));b.onclick=r.f;x.append(b);w.append(x)});sheet('فایل‌های این گفتگو',w)}
+$('#fls').onclick=showFiles;
+function fcardHTML(l,n,c){const x=String(l).toLowerCase(),NM={html:'Index',svg:'Image',js:'Script',javascript:'Script',python:'Script',py:'Script',css:'Styles',json:'Data'};let nm=NM[x]||'Code';if(x==='html'){const t=c.match(/&lt;title&gt;([^&]*)&lt;\/title&gt;/i);if(t&&t[1].trim())nm=t[1].trim().slice(0,40)}return `<div class="fcard" role="button" tabindex="0" data-l="${x}"><span class="ft"><b>${nm}</b><small>${x==='html'?'Website':x==='svg'?'Image':'Code'} · ${(x||'text').toUpperCase()} · ${n} خط</small></span><span class="fi">${x==='svg'?'🖼':x==='html'?'🌐':'&lt;/&gt;'}</span><pre hidden><code>${c}</code></pre></div>`}
+const _md2=md;md=(t,live)=>_md2(t,live).replace(/<div class="cb"><div><span>([^<]*)<\/span><span class="ln">(\d+)[^<]*<\/span><span>[\s\S]*?<\/span><\/div><pre hidden><code>([\s\S]*?)<\/code><\/pre><\/div>/g,(m,l,n,c)=>fcardHTML(l,n,c));
+const _ce=cardEl;cardEl=function(c){const d=_ce(c);if(c.t==='img'){const im=d.querySelector('img');if(im)im.onclick=()=>openFile('svg',c.svg,c.title||'Image')}return d};
+$('#w').addEventListener('click',e=>{const f=e.target.closest('.fcard');if(!f||f.dataset.l===undefined)return;openFile(f.dataset.l,f.querySelector('code').textContent,f.querySelector('b').textContent)});
+const MSG=$('#msgs'),near=()=>MSG.scrollHeight-MSG.scrollTop-MSG.clientHeight<90;
+MSG.addEventListener('scroll',()=>{STICK=near();$('#dn').hidden=STICK||MSG.scrollHeight<=MSG.clientHeight+10});
+['wheel','touchmove'].forEach(ev=>MSG.addEventListener(ev,()=>{STICK=false},{passive:true}));
+$('#dn').onclick=()=>{STICK=true;MSG.scrollTo({top:MSG.scrollHeight,behavior:'smooth'});$('#dn').hidden=true};
+let lastCur;const _rn=render;render=function(){const same=cur===lastCur&&!STICK,top=MSG.scrollTop;lastCur=cur;if(!same)STICK=true;_rn();if(same)MSG.scrollTop=top};
+function guard(code,x){const h=String(code),G=GS+(x||'');if(/<head(\s[^>]*)?>/i.test(h))return h.replace(/<head(\s[^>]*)?>/i,m=>m+G);if(/<html(\s[^>]*)?>/i.test(h))return h.replace(/<html(\s[^>]*)?>/i,m=>m+G);if(/<!doctype[^>]*>/i.test(h))return h.replace(/<!doctype[^>]*>/i,m=>m+G);return G+h}
+const EARLY='<scr'+'ipt>'+`window.__E=[];addEventListener('error',function(e){__E.push(String(e.message))});`+'</scr'+'ipt>';
+const PROBE=`(function(){var R={errors:[],dead:[],clicked:0};window.open=function(){};window.alert=window.confirm=window.prompt=function(){return true};console.error=function(){R.errors.push([].join.call(arguments,' '))};
+setTimeout(function(){var els=[].slice.call(document.querySelectorAll('button,a[href],[onclick],[role=button],input[type=submit],input[type=button],summary,[data-action]')).slice(0,80),ob=new MutationObserver(function(){});ob.observe(document.documentElement,{subtree:true,childList:true,attributes:true,characterData:true});
+els.forEach(function(el){var t=String(el.textContent||el.value||el.getAttribute('aria-label')||el.id||el.tagName).trim().slice(0,30),href=el.getAttribute('href');
+if(href==='#'||href===''){R.dead.push(t+' (href خالی)');return}
+if(href&&href.charAt(0)==='#'&&href.length>1&&!document.getElementById(href.slice(1))){R.dead.push(t+' -> #'+href.slice(1)+' (مقصد ندارد)');return}
+if(/^(https?:|mailto:|tel:)/i.test(href||'')||el.disabled)return;
+ob.takeRecords();var y=scrollY;try{el.click()}catch(x){R.errors.push(t+': '+x)}R.clicked++;
+if(!ob.takeRecords().length&&scrollY===y&&!(href&&href.charAt(0)==='#'))R.dead.push(t+' (اثر فوری ندارد)')});
+setTimeout(function(){R.errors=(window.__E||[]).concat(R.errors).slice(0,10);R.dead=R.dead.slice(0,15);parent.postMessage({id:__ID,report:R},'*')},400)},700)})();`;
+Object.assign(LBLS,{test_site:'تست خودکار دکمه‌ها',suggest_next:'پیشنهاد قدم بعدی',think:'تحلیل و برنامه‌ریزی'});Object.assign(ICO,{test_site:'🧪',suggest_next:'💡',think:'🧠'});
+const _ce2=cardEl;cardEl=function(c){if(c.t==='chips'){const d=document.createElement('div');d.className='chips2';(c.items||[]).forEach(t=>{const b=document.createElement('button');b.textContent=t;b.onclick=()=>{if(!busy)send(t)};d.append(b)});return d}return _ce2(c)};
+async function shrink(f){try{const b=await createImageBitmap(f),s=Math.min(1,1600/Math.max(b.width,b.height));if(s===1&&f.size<2e6)return f;const c=document.createElement('canvas');c.width=Math.round(b.width*s);c.height=Math.round(b.height*s);c.getContext('2d').drawImage(b,0,0,c.width,c.height);return await new Promise(r=>c.toBlob(x=>r(x||f),'image/jpeg',.85))}catch(e){return f}}
+async function addFiles(fl){for(const f of fl){const n=f.name||'file';if((f.type||'').startsWith('video/')){await addVideo(f)}else if((f.type||'').startsWith('image/')){att.push({name:n,img:await shrink(f)})}else if(f.size<3e6&&(/^text\//.test(f.type||'')||/[.](txt|md|csv|json|js|ts|py|html|css|xml|ya?ml|log|sql|java|c|cpp|go|rs|php|sh|ini|toml|svg)$/i.test(n)||!f.type)){try{att.push({name:n,text:(await f.text()).slice(0,200000)})}catch(e){toast('خواندن '+n+' ممکن نشد')}}else toast('این نوع فایل پشتیبانی نمی‌شود: '+n)}renderAtt()}
+$('#att').onclick=e=>{e.stopPropagation();$('#am').hidden=!$('#am').hidden};document.addEventListener('click',e=>{if(!e.target.closest('#am,#att'))$('#am').hidden=true});
+['#fi1','#fi2','#fi3'].forEach(s=>{$(s).onchange=async e=>{$('#am').hidden=true;const fl=[...e.target.files];e.target.value='';await addFiles(fl)}});
+function editMsg(u){const c=chat();if(!u||!c||busy)return;const i=+u.dataset.i;$('#in').value=c.msgs[i].show??c.msgs[i].content;c.msgs=c.msgs.slice(0,i);save();render();autosize();$('#in').focus()}
+let lt=0,lu=null;$('#w').addEventListener('click',e=>{const u=e.target.closest('.m.u');if(!u)return;const n=Date.now();if(lu===u&&n-lt<400){editMsg(u);lu=null}else{lu=u;lt=n}});
+MODES.chat+=`
+
+شخصیت و کیفیت:
+• دقیق به حرف کاربر گوش بده؛ هر دستور را کامل و بدون جاافتادن اجرا کن. اگر مبهم بود بهترین برداشت را اجرا کن و فقط در ضرورت مطلق یک سؤال بپرس.
+• ایده‌پرداز باش: اگر کاربر ایدهٔ مبهم یا درخواست «خفن» داد، ۳ تا ۵ ایدهٔ متمایز و جسورانه (هرکدام یک خط) بده، بهترینش را انتخاب کن و بلافاصله بساز؛ ویژگی‌های غیرمنتظرهٔ ارزشمند (انیمیشن، حالت‌ها، جزئیات ریز) اضافه کن.
+• برای کارهای بزرگ: اول think و update_plan، بعد بساز، بعد test_site را صدا بزن و مشکلات را با edit_code رفع کن، بعد خلاصهٔ کوتاه و suggest_next با ۲ تا ۴ قدم بعدی.
+• هرگز نیمه‌کاره یا placeholder نده؛ متن‌ها و داده‌های نمونه را واقعی و باکیفیت بنویس.
+• اگر کاربر فایل یا تصویر پیوست کرد، حتماً محتوای آن را دقیق در پاسخ لحاظ کن.`;
+async function addVideo(f){const n=f.name||'video';toast('در حال خواندن ویدیو…');try{const u=URL.createObjectURL(f),v=document.createElement('video');v.muted=true;v.playsInline=true;v.preload='auto';v.src=u;await new Promise((ok,no)=>{v.onloadedmetadata=ok;v.onerror=()=>no(new Error('x'));setTimeout(()=>no(new Error('t')),15000)});const d=isFinite(v.duration)&&v.duration>0?v.duration:1,N=Math.min(8,Math.max(3,Math.round(d/3))),s=Math.min(1,768/Math.max(v.videoWidth||768,v.videoHeight||768)),c=document.createElement('canvas');c.width=Math.round((v.videoWidth||768)*s);c.height=Math.round((v.videoHeight||432)*s);const fr=[];for(let i=0;i<N;i++){v.currentTime=Math.max(0,Math.min(d-0.05,d*(i+.5)/N));await new Promise(ok=>{v.onseeked=ok;setTimeout(ok,4000)});c.getContext('2d').drawImage(v,0,0,c.width,c.height);const b=await new Promise(r=>c.toBlob(r,'image/jpeg',.8));if(b)fr.push(b)}URL.revokeObjectURL(u);if(!fr.length)throw new Error('nf');att.push({name:'🎬 '+n,img:fr[0],extra:fr.slice(1),text:'[ویدیوی «'+n+'» (حدود '+Math.round(d)+' ثانیه) به‌صورت '+fr.length+' فریم تصویری پیوست شده؛ صدا قابل دریافت نیست.]'});toast('✓ ویدیو آماده شد')}catch(e){toast('خواندن این ویدیو ممکن نشد')}}
+$('#tts2').onclick=()=>{$('#tts').click();$('#tts2').textContent=(CFG.voice?'🔊':'🔇')+' خواندن پاسخ‌ها با صدا'};$('#tts2').textContent=(CFG.voice?'🔊':'🔇')+' خواندن پاسخ‌ها با صدا';
+MODES.chat=`هویت: نام تو «نووا» است. هنگام سلام و معرفی خودت فقط بگو «من نووا هستم، دستیار هوشمند همه‌کاره» و نام شرکت یا مدل پشت‌صحنه را خودت مطرح نکن. اگر کاربر مستقیم و جدی پرسید از چه مدلی استفاده می‌شود، دروغ نگو: بگو یک مدل زبانی پشت این برنامه است و جزئیاتش به نسخهٔ اجرا بستگی دارد.\n\n`+MODES.chat;
+const th=store.get("nova.theme",null);if(th)document.documentElement.dataset.theme=th;syncT();
+render();
+</script>
+</body>
+</html>
